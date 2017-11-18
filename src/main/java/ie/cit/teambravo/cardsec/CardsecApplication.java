@@ -15,15 +15,7 @@ import java.util.Arrays;
 })
 public class CardsecApplication {
 
-	@Value("${google.api.distance.key}")
-	private String API_KEY;
-
 	public static void main(String[] args) {
 		SpringApplication.run(CardsecApplication.class, args);
-	}
-
-	@Bean
-	public GeoApiContext geoApiContext(ApplicationContext ctx) {
-		return new GeoApiContext.Builder().apiKey(API_KEY).build();
 	}
 }

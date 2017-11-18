@@ -21,7 +21,7 @@ public class ValidationController {
 	@RequestMapping(value = "/request", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Boolean validationRequest() {
-		return false;
+		return Boolean.FALSE;
 	}
 
 }

@@ -1,7 +1,13 @@
 package ie.cit.teambravo.cardsec.services;
 
-import com.google.maps.*;
-import com.google.maps.model.*;
+import com.google.maps.DistanceMatrixApi;
+import com.google.maps.DistanceMatrixApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.DistanceMatrix;
+import com.google.maps.model.DistanceMatrixRow;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
