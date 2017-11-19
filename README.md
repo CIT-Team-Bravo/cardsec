@@ -8,3 +8,8 @@
 #### Swagger
 
 https://cardsec.cfapps.io/swagger-ui.html
+
+#### H2 console
+
+URL: http://localhost:8080/h2-console
+JDBC: jdbc:h2:mem:AZ
