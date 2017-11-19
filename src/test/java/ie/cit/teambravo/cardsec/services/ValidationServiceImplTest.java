@@ -1,6 +1,7 @@
 package ie.cit.teambravo.cardsec.services;
 
 import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.dto.LocationDto;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import static org.mockito.Mockito.when;
 public class ValidationServiceImplTest {
     @Mock
     private EventService eventServiceMock;
+    @Mock
+    private PanelLocatorService panelLocatorServiceMock;
     @InjectMocks
     private ValidationService validationService = new ValidationServiceImpl();
 
@@ -31,6 +34,7 @@ public class ValidationServiceImplTest {
         eventToBeSaved.setPanelId(panelId);
         eventToBeSaved.setCardId(cardId);
         when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
+        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(new LocationDto());
 
         // Act
         Boolean result = validationService.validate(panelId, cardId, true);

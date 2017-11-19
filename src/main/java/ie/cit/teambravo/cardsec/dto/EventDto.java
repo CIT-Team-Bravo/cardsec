@@ -14,7 +14,7 @@ public class EventDto {
     private String cardId;
     private String timestamp;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private LocationDto locationDto;
     private Boolean accessAllowed;
 

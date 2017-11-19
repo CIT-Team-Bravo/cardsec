@@ -1,7 +1,6 @@
 package ie.cit.teambravo.cardsec.services;
 
 import ie.cit.teambravo.cardsec.dto.EventDto;
-import ie.cit.teambravo.cardsec.dto.LocationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,9 @@ public class ValidationServiceImpl implements ValidationService {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private PanelLocatorService panelLocatorService;
+
     @Override
     public boolean validate(String panelId, String cardId, Boolean allowed) {
 
@@ -22,6 +24,7 @@ public class ValidationServiceImpl implements ValidationService {
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(allowed);
         eventDto.setTimestamp(new Date().toString());
+        eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
 
         eventService.saveEvent(eventDto);
 
