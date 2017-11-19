@@ -1,11 +1,30 @@
 package ie.cit.teambravo.cardsec.dto;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
 public class EventDto {
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
     private String panelId;
     private String cardId;
     private String timestamp;
+
+    @OneToOne
     private LocationDto locationDto;
     private Boolean accessAllowed;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getPanelId() {
         return panelId;
