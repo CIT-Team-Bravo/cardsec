@@ -1,0 +1,5 @@
+name: cardsec
+instances: 1
+memory: 1024M
+path: build/libs/cardsec-0.0.1-SNAPSHOT.jar
+buildpack: java_buildpack
