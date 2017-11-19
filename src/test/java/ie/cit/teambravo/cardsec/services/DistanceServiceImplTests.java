@@ -24,13 +24,13 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({GeocodingApi.class, DistanceMatrixApiRequest.class, DistanceMatrixApi.class})
-public class DistanceServiceTests {
+public class DistanceServiceImplTests {
 
     @Mock
     private GeoApiContext geoApiContext;
 
     @InjectMocks
-    private DistanceService distanceService;
+    private DistanceServiceImpl distanceService;
 
     @Test
     public void should_get_distance_between_2_points() throws Exception {
