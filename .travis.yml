@@ -1,6 +1,16 @@
 language: java
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 after_success:
-  - ./gradlew build jacocoTestReport coveralls
+- "./gradlew build jacocoTestReport coveralls"
+deploy:
+  provider: cloudfoundry
+  api: https://api.system.titan.lab.emc.com
+  username: david.ahern26@gmail.com
+  password:
+    secure: jPMDDcL6pxErtfv1Yt8Fvu4KVrxvcb+tbkGJM370P4xiGLOPcqU/Rjvoy2JQ4kdbz1YLx0eZl/Xeprb3Uc8KRJRZnhEUHBJM2i/M2teb6JhV9zgx7TqIpiU3jc3YxDG8E56g0rOvtyeEMgMpwRDH2YCKbqPS+tQo6wF29CDFoU/sCxiXnrOhezrseLnLZCnmhsVIGYV20d1lfYnJR8A+1X561cL7wIhvbPGtvRwRCnqkzCdMZg8yhSmil3Y9cnPwFPTfVlHsytA6d58At8Df0WIFHChTR6lxOBLtqmgDNPduJs7VqfbjeAIEJkrorQ4sRQ7v5fRh5vzSjqteVi5L2L5YH5OYCHaJusJi5Xp1wWPmC68z9BUcCnWmo2DLsI7OqaN61IKLL1zjwanu3+vyp9m1zlA38diU5Ldm9SLajhhLwdnk+ultjKDbtULWw8UskveayjcVmMMWmu+8PU/gdrLTDM/kmKlnY2kJ4vAIWhoeEaEY5Z01cn5QUGYFlM9folulRJGRUGdKMpabXPV8SOqjZQNbg/I73yoJl/OGBlPAx5jDwaGAjsMa4csjFxqaKmwfMyy+HWY5Oymoly9TV9+ha4RyPMoNDSsgQjmMJzWiV2H/UqKN2cZGasgEzHlAqi6uiQSb/HHk33GvkMl9iclRZrCvyu2WXcxQCRaeMv0=
+  organization: thor
+  space: prod
+  on:
+    repo: CIT-Team-Bravo/cardsec
+    branch: master
