@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -25,6 +26,8 @@ public class ValidationServiceImpl implements ValidationService {
         eventDto.setAccessAllowed(allowed);
         eventDto.setTimestamp(new Date().toString());
         eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
+
+        List<EventDto> previousEvents = eventService.findByCardId(cardId);
 
         eventService.saveEvent(eventDto);
 
