@@ -2,6 +2,7 @@ package ie.cit.teambravo.cardsec.services;
 
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixRow;
+import ie.cit.teambravo.cardsec.dto.CoordinatesDto;
 import ie.cit.teambravo.cardsec.dto.EventDto;
 import ie.cit.teambravo.cardsec.dto.LocationDto;
 import org.hamcrest.Matchers;
@@ -28,6 +29,7 @@ public class ValidationServiceImplTest {
     private PanelLocatorService panelLocatorServiceMock;
     @Mock
     private DistanceService distanceServiceMock;
+
     @InjectMocks
     private ValidationService validationService = new ValidationServiceImpl();
 
@@ -36,15 +38,16 @@ public class ValidationServiceImplTest {
         // Arrange
         String panelId = UUID.randomUUID().toString();
         String cardId = UUID.randomUUID().toString();
-        EventDto eventToBeSaved = new EventDto();
+        EventDto eventToBeSaved = getEventDto(panelId, cardId, true, -0.131913, 51.524774);
         eventToBeSaved.setPanelId(panelId);
         eventToBeSaved.setCardId(cardId);
-        EventDto eventDto1 = getEventDto("panelId", "cardId", true);
-        EventDto eventDto2 = getEventDto("panelId", "cardId", true);
-        when(eventServiceMock.findByCardId(eventDto1.getCardId())).thenReturn(Arrays.asList(eventDto1, eventDto2));
+        EventDto eventDto2 = getEventDto(panelId, cardId, true, -8.4980692, 51.8960528);
+
+        when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
         when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
-        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(new LocationDto());
-        mockDistanceToUclFrom(-8.4980692,51.8960528);
+        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
+
+        mockDistanceToUclFrom(-8.4980692, 51.8960528); //cork city, fitzgerald's park
 
         // Act
         Boolean result = validationService.validate(panelId, cardId, true);
@@ -52,21 +55,24 @@ public class ValidationServiceImplTest {
         // Assert & Verify
         assertThat(result, Matchers.is(true));
         verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
-        verify(distanceServiceMock).getDistanceBetween2Points(-8.4980692,51.8960528, -0.131913, 51.524774);
+        verify(distanceServiceMock).getDistanceBetween2Points(-8.4980692, 51.8960528, -0.131913, 51.524774);
     }
 
     @Test
-    public void validate_when_requestIsNotValid_then_respondWithTrue() {
+    public void validate_when_requestIsNotValid_then_respondWithFalse() {
         // Arrange
         String panelId = UUID.randomUUID().toString();
         String cardId = UUID.randomUUID().toString();
         EventDto eventToBeSaved = new EventDto();
         eventToBeSaved.setPanelId(panelId);
         eventToBeSaved.setCardId(cardId);
-        EventDto eventDto1 = getEventDto("panelId", "cardId", true);
-        EventDto eventDto2 = getEventDto("panelId", "cardId", true);
-        when(eventServiceMock.findByCardId(eventDto1.getCardId())).thenReturn(Arrays.asList(eventDto1, eventDto2));
+        EventDto eventDto1 = getEventDto("panelId", "cardId", true, 0.0D, 0.0D);
+        EventDto eventDto2 = getEventDto("panelId", "cardId", true, 0.0D, 0.0D);
+        when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
         when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
+        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
+
+        mockDistanceToUclFrom(52.237049, 21.017532); // Warsaw, Poland
 
         // Act
         Boolean result = validationService.validate(panelId, cardId, false);
@@ -83,12 +89,22 @@ public class ValidationServiceImplTest {
 
     }
 
-    private EventDto getEventDto(String panelId, String cardId, boolean accessAllowed) {
+    private EventDto getEventDto(String panelId, String cardId, boolean accessAllowed, Double latitude, Double longitude) {
         EventDto eventDto = new EventDto();
         eventDto.setPanelId(panelId);
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(accessAllowed);
-        eventDto.setTimestamp(new Date().toString());
+        eventDto.setTimestamp(new Date());
+        eventDto.setLocationDto(getLocationDtoWithCoordinates(latitude, longitude));
         return eventDto;
+    }
+
+    private LocationDto getLocationDtoWithCoordinates(Double latitude, Double longitude) {
+        LocationDto locationDto = new LocationDto();
+        CoordinatesDto coordinatesDto = new CoordinatesDto();
+        coordinatesDto.setLatitude(latitude);
+        coordinatesDto.setLongitude(longitude);
+        locationDto.setCoordinates(coordinatesDto);
+        return locationDto;
     }
 }

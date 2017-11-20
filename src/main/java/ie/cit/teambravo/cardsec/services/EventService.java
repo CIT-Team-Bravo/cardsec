@@ -8,4 +8,5 @@ public interface EventService {
     EventDto saveEvent(EventDto eventDto);
 
     List<EventDto> findByCardId(String cardId);
+    EventDto findLatestEventByCard(String cardId);
 }

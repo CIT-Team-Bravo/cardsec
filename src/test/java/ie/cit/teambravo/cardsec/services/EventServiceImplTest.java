@@ -55,8 +55,7 @@ public class EventServiceImplTest {
         // Act
         List<EventDto> results = eventService.findByCardId(eventDto2.getCardId());
 
-        // Assert & verify
-        // Assert
+        // Assert & Verify
         assertThat(results, notNullValue());
         assertThat(results, hasSize(2));
         results.forEach(result -> {
@@ -67,12 +66,32 @@ public class EventServiceImplTest {
         verify(eventRepositoryMock).findByCardId(eventDto1.getCardId());
     }
 
+    @Test
+    public void findLatestEventByCard_when_called_then_latestEventIsReturned(){
+        // Arrange
+        String cardIdToBeFound = "cardId";
+        EventDto eventDto1 = getEventDto("panelId1", cardIdToBeFound, false);
+        EventDto eventDto2 = getEventDto("panelId2", cardIdToBeFound, true);
+        when(eventRepositoryMock.findFirstByCardIdOrderByTimestampDesc(cardIdToBeFound)).thenReturn(eventDto2);
+
+        // Act
+        EventDto result = eventService.findLatestEventByCard(cardIdToBeFound);
+
+        // Assert & Verify
+        assertThat(result, notNullValue());
+        assertThat(result.getPanelId(), is(eventDto2.getPanelId()));
+        assertThat(result.getCardId(), is(eventDto2.getCardId()));
+        assertThat(result.getAccessAllowed(), is(eventDto2.getAccessAllowed()));
+
+        verify(eventRepositoryMock).findFirstByCardIdOrderByTimestampDesc(cardIdToBeFound);
+    }
+
     private EventDto getEventDto(String panelId, String cardId, boolean accessAllowed) {
         EventDto eventDto = new EventDto();
         eventDto.setPanelId(panelId);
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(accessAllowed);
-        eventDto.setTimestamp(new Date().toString());
+        eventDto.setTimestamp(new Date());
         return eventDto;
     }
 }

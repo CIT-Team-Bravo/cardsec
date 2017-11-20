@@ -22,4 +22,9 @@ public class EventServiceImpl implements EventService {
     public List<EventDto> findByCardId(String cardId) {
         return eventRepository.findByCardId(cardId);
     }
+
+    @Override
+    public EventDto findLatestEventByCard(String cardId) {
+        return eventRepository.findFirstByCardIdOrderByTimestampDesc(cardId);
+    }
 }

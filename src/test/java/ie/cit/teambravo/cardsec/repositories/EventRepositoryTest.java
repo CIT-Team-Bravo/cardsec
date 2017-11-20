@@ -2,6 +2,7 @@ package ie.cit.teambravo.cardsec.repositories;
 
 import ie.cit.teambravo.cardsec.dto.EventDto;
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,15 @@ public class EventRepositoryTest {
     @Autowired
     private EventRepository eventRepository;
 
+    @After
+    public void teardown(){
+        eventRepository.deleteAll();
+    }
+
     @Test
     public void save_when_eventObjectSupplied_then_eventObjectIsSaved_and_returned() {
         // Arrange
-        EventDto eventDto = getEventDto();
+        EventDto eventDto = getEventDto("panel-id");
 
         // Act
         EventDto result = eventRepository.save(eventDto);
@@ -41,8 +47,8 @@ public class EventRepositoryTest {
     @Test
     public void findByCardId_when_cardIdIsFound_then_listOfMatchingEventsIsReturned() {
         // Arrange
-        EventDto eventDto1 = getEventDto();
-        EventDto eventDto2 = getEventDto();
+        EventDto eventDto1 = getEventDto("panel-id");
+        EventDto eventDto2 = getEventDto("panel-id");
 
         eventRepository.save(eventDto1);
         eventRepository.save(eventDto2);
@@ -62,9 +68,28 @@ public class EventRepositoryTest {
     }
 
     @Test
+    public void  findFirstByCardIdOrderByTimestampDesc_when_cardIdIsFound_then_latestEventIsReturned() {
+        // Arrange
+        EventDto eventDto1 = getEventDto("panel-id");
+        eventRepository.save(eventDto1);
+
+        EventDto eventDto2 = getEventDto("panel-id2");
+        eventRepository.save(eventDto2);
+
+        // Act
+        EventDto result = eventRepository.findFirstByCardIdOrderByTimestampDesc(eventDto1.getCardId());
+
+        // Assert
+        assertThat(result, notNullValue());
+        assertThat(result.getPanelId(), is(eventDto2.getPanelId()));
+        assertThat(result.getCardId(), is(eventDto2.getCardId()));
+        assertThat(result.getAccessAllowed(), is(eventDto2.getAccessAllowed()));
+    }
+
+    @Test
     public void findByCardId_when_cardIdIsNotFound_then_emptyEventListIsReturned() {
         // Arrange
-        EventDto eventDto = getEventDto();
+        EventDto eventDto = getEventDto("panel-id");
         eventRepository.save(eventDto);
 
         // Act
@@ -76,12 +101,12 @@ public class EventRepositoryTest {
 
     }
 
-    private EventDto getEventDto() {
+    private EventDto getEventDto(String panelId) {
         EventDto eventDto = new EventDto();
-        eventDto.setPanelId("panel-001");
+        eventDto.setPanelId(panelId);
         eventDto.setCardId("card-001");
         eventDto.setAccessAllowed(true);
-        eventDto.setTimestamp(new Date().toString());
+        eventDto.setTimestamp(new Date());
         return eventDto;
     }
 

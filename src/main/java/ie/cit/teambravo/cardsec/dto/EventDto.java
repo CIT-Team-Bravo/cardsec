@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Entity
 public class EventDto {
@@ -16,7 +17,7 @@ public class EventDto {
     private String id;
     private String panelId;
     private String cardId;
-    private String timestamp;
+    private Date timestamp;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private LocationDto locationDto;
@@ -46,14 +47,6 @@ public class EventDto {
         this.cardId = cardId;
     }
 
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public LocationDto getLocationDto() {
         return locationDto;
     }
@@ -68,5 +61,13 @@ public class EventDto {
 
     public void setAccessAllowed(Boolean accessAllowed) {
         this.accessAllowed = accessAllowed;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

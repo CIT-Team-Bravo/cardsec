@@ -1,17 +1,19 @@
 package ie.cit.teambravo.cardsec.services;
 
+import com.google.maps.model.DistanceMatrix;
 import ie.cit.teambravo.cardsec.dto.EventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private DistanceService distanceService;
 
     @Autowired
     private PanelLocatorService panelLocatorService;
@@ -24,13 +26,16 @@ public class ValidationServiceImpl implements ValidationService {
         eventDto.setPanelId(panelId);
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(allowed);
-        eventDto.setTimestamp(new Date().toString());
+        eventDto.setTimestamp(new Date());
         eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
-
-        List<EventDto> previousEvents = eventService.findByCardId(cardId);
-
         eventService.saveEvent(eventDto);
 
+        EventDto previousEvent = eventService.findLatestEventByCard(cardId);
+        Double prevLat = previousEvent.getLocationDto().getCoordinates().getLatitude();
+        Double prevLong = previousEvent.getLocationDto().getCoordinates().getLongitude();
+
+        DistanceMatrix distanceBetween2Points = distanceService.getDistanceBetween2Points(prevLat, prevLong, eventDto.getLocationDto().getCoordinates().getLatitude(), eventDto.getLocationDto().getCoordinates().getLongitude());
+        
         if (Boolean.TRUE.equals(allowed)) {
             return true;
         }
