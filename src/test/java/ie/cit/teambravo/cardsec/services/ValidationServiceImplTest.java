@@ -2,6 +2,8 @@ package ie.cit.teambravo.cardsec.services;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,6 +72,30 @@ public class ValidationServiceImplTest {
 		// Assert & Verify
 		assertThat(result, Matchers.is(false));
 		verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
+	}
+
+	@Test
+	public void validate_when_requestIsNotValid_then_publishAMessage() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+
+		// Act
+		validationService.validate(panelId, cardId, false);
+
+		verify(eventGatewayMock, times(1)).sendToMqtt(any());
+	}
+
+	@Test
+	public void validate_when_requestIsValid_then_dontPublishAMessage() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+
+		// Act
+		validationService.validate(panelId, cardId, true);
+
+		verify(eventGatewayMock, never()).sendToMqtt(any());
 	}
 
 }

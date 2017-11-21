@@ -26,11 +26,15 @@ public class CardsecConfig {
 
 	@Value("${google.api.distance.key}")
 	private String API_KEY;
+	@Value("${mqtt.server.host}")
+	private String host;
+	@Value("${mqtt.server.port}")
+	private String port;
 
 	@Bean
 	public MqttPahoClientFactory mqttClientFactory() {
 		DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-		factory.setServerURIs("tcp://localhost:1883");
+		factory.setServerURIs(String.format("tcp://%s:%s", host, port));
 		return factory;
 	}
 
