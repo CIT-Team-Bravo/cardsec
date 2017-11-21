@@ -1,68 +1,75 @@
 package ie.cit.teambravo.cardsec.dto;
 
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class EventDto {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
-    private String panelId;
-    private String cardId;
-    private String timestamp;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    private LocationDto locationDto;
-    private Boolean accessAllowed;
+	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	private String id;
+	private String panelId;
+	private String cardId;
+	private String timestamp;
 
-    public String getId() {
-        return id;
-    }
+	@OneToOne(cascade = {
+			CascadeType.ALL
+	})
+	private LocationDto locationDto;
+	private Boolean accessAllowed;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getPanelId() {
-        return panelId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setPanelId(String panelId) {
-        this.panelId = panelId;
-    }
+	public String getPanelId() {
+		return panelId;
+	}
 
-    public String getCardId() {
-        return cardId;
-    }
+	public void setPanelId(String panelId) {
+		this.panelId = panelId;
+	}
 
-    public void setCardId(String cardId) {
-        this.cardId = cardId;
-    }
+	public String getCardId() {
+		return cardId;
+	}
 
-    public String getTimestamp() {
-        return timestamp;
-    }
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
+	public String getTimestamp() {
+		return timestamp;
+	}
 
-    public LocationDto getLocationDto() {
-        return locationDto;
-    }
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
 
-    public void setLocationDto(LocationDto locationDto) {
-        this.locationDto = locationDto;
-    }
+	public LocationDto getLocationDto() {
+		return locationDto;
+	}
 
-    public Boolean getAccessAllowed() {
-        return accessAllowed;
-    }
+	public void setLocationDto(LocationDto locationDto) {
+		this.locationDto = locationDto;
+	}
 
-    public void setAccessAllowed(Boolean accessAllowed) {
-        this.accessAllowed = accessAllowed;
-    }
+	public Boolean getAccessAllowed() {
+		return accessAllowed;
+	}
+
+	public void setAccessAllowed(Boolean accessAllowed) {
+		this.accessAllowed = accessAllowed;
+	}
 }

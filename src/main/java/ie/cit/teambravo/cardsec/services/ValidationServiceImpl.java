@@ -1,37 +1,48 @@
 package ie.cit.teambravo.cardsec.services;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.messaging.EventGateway;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
-    @Autowired
-    private EventService eventService;
+	private EventService eventService;
+	private PanelLocatorService panelLocatorService;
+	EventGateway eventGateway;
 
-    @Autowired
-    private PanelLocatorService panelLocatorService;
+	@Autowired
+	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
+			EventGateway eventGateway) {
+		this.eventService = eventService;
+		this.panelLocatorService = panelLocatorService;
+		this.eventGateway = eventGateway;
+	}
 
-    @Override
-    public boolean validate(String panelId, String cardId, Boolean allowed) {
+	@Override
+	public boolean validate(String panelId, String cardId, Boolean allowed) {
 
-        // Placeholder for adding events to database
-        EventDto eventDto = new EventDto();
-        eventDto.setPanelId(panelId);
-        eventDto.setCardId(cardId);
-        eventDto.setAccessAllowed(allowed);
-        eventDto.setTimestamp(new Date().toString());
-        eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
+		// Placeholder for adding events to database
+		EventDto eventDto = new EventDto();
+		eventDto.setPanelId(panelId);
+		eventDto.setCardId(cardId);
+		eventDto.setAccessAllowed(allowed);
+		eventDto.setTimestamp(new Date().toString());
+		eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
 
-        eventService.saveEvent(eventDto);
+		eventService.saveEvent(eventDto);
 
-        if (Boolean.TRUE.equals(allowed)) {
-            return true;
-        }
+		if (Boolean.TRUE.equals(allowed)) {
+			return true;
+		}
 
-        return false;
-    }
+		eventGateway.sendToMqtt(new GenericMessage<String>("BLAH"));
+
+		return false;
+	}
 }
