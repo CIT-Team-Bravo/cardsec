@@ -53,6 +53,7 @@ dependencies {
     testCompile("org.powermock:powermock-module-junit4-rule:1.6.4")
     testCompile("org.powermock:powermock-api-mockito:1.6.4")
     testCompile("org.powermock:powermock-classloading-xstream:1.6.4")
+    compile(group: "com.github.java-json-tools", name: "json-schema-validator", version: "2.2.8");
 }
 
 jacocoTestReport {
