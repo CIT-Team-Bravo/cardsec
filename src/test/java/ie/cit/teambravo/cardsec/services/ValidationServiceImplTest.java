@@ -3,6 +3,7 @@ package ie.cit.teambravo.cardsec.services;
 import ie.cit.teambravo.cardsec.dto.EventDto;
 import ie.cit.teambravo.cardsec.dto.LocationDto;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,8 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,8 +25,15 @@ public class ValidationServiceImplTest {
     private EventService eventServiceMock;
     @Mock
     private PanelLocatorService panelLocatorServiceMock;
+    @Mock
+    private DurationService durationServiceMock;
     @InjectMocks
     private ValidationService validationService = new ValidationServiceImpl();
+
+    @Before
+    public void setup() {
+        when(durationServiceMock.getTravelTimeBetween2Points(anyObject(), anyObject())).thenReturn(1L);
+    }
 
     @Test
     public void validate_when_requestIsValid_then_respondWithTrue() {
