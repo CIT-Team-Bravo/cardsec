@@ -61,7 +61,7 @@ public class MessagingAlertDistributorTest {
 	}
 
 	@Test
-	public void generateAlert_when_calledWithBadArguments_then_throwsException() throws Exception {
+	public void generateAlert_when_calledWithBadArguments_then_throwsException() {
 		// Arrange
 		Event currentEvent = generateTestEvent();
 
