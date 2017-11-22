@@ -1,0 +1,33 @@
+{
+	"severity": "High",
+	"title": "Possible Cloned Access Card",
+	"description": "An access-card has been used that was very recently used in another location, indicating that it is unlikely to be the same card-holder",
+	"currentEvent": {
+		"panelId": "123b33e8-63b9-4c04-838b-f65aacbeab42",
+		"cardId": "246609c6-ce9c-41a2-b64d-ba8066a376af",
+		"timestamp": 1508855053559,
+		"location": {
+			"coordinates": {
+				"longitude": 51.52528,
+				"latitude": -0.133313
+			},
+			"altitude": 150,
+			"relativeLocation": "UCL, Department of Physics & Astronomy Main Entrance, London, UK"
+		},
+		"accessAllowed": true
+	},
+	"previousEvent": {
+		"panelId": "efa66c50-1327-4aec-9661-ef7531235420",
+		"cardId": "246609c6-ce9c-41a2-b64d-ba8066a376af",
+		"timestamp": 1508855053259,
+		"location": {
+			"coordinates": {
+				"longitude": 42.373921,
+				"latitude": -71.116374
+			},
+			"altitude": 50,
+			"relativeLocation": "Widener Library, Harvard University, Main Entrance, MA, USA"
+		},
+		"accessAllowed": true
+	}
+}

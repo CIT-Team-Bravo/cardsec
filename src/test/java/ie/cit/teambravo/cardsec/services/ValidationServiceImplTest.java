@@ -16,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
-import ie.cit.teambravo.cardsec.dto.LocationDto;
+import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.dto.Location;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
@@ -42,11 +42,11 @@ public class ValidationServiceImplTest {
 		// Arrange
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
-		EventDto eventToBeSaved = new EventDto();
+		Event eventToBeSaved = new Event();
 		eventToBeSaved.setPanelId(panelId);
 		eventToBeSaved.setCardId(cardId);
-		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
-		when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(new LocationDto());
+		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
+		when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(new Location());
 
 		// Act
 		Boolean result = validationService.validate(panelId, cardId, true);
@@ -61,10 +61,10 @@ public class ValidationServiceImplTest {
 		// Arrange
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
-		EventDto eventToBeSaved = new EventDto();
+		Event eventToBeSaved = new Event();
 		eventToBeSaved.setPanelId(panelId);
 		eventToBeSaved.setCardId(cardId);
-		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
+		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
 
 		// Act
 		Boolean result = validationService.validate(panelId, cardId, false);

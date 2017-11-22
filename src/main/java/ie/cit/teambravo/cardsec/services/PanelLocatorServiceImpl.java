@@ -1,6 +1,6 @@
 package ie.cit.teambravo.cardsec.services;
 
-import ie.cit.teambravo.cardsec.dto.LocationDto;
+import ie.cit.teambravo.cardsec.dto.Location;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,8 +12,8 @@ public class PanelLocatorServiceImpl implements PanelLocatorService {
     private String PANEL_LOCATION_ENDPOINT;
 
     @Override
-    public LocationDto getPanelLocation(String panelId) {
+    public Location getPanelLocation(String panelId) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(PANEL_LOCATION_ENDPOINT + "/" + panelId, LocationDto.class);
+        return restTemplate.getForObject(PANEL_LOCATION_ENDPOINT + "/" + panelId, Location.class);
     }
 }

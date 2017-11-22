@@ -1,6 +1,6 @@
 package ie.cit.teambravo.cardsec.services;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
 
     @Override
-    public EventDto saveEvent(EventDto eventDto) {
+    public Event saveEvent(Event eventDto) {
         return eventRepository.save(eventDto);
     }
 }
