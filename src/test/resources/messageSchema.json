@@ -12,5 +12,5 @@
             "type": "string"
         }
     },
-    "required": ["severity", "title"]
+    "required": ["severity", "title", "description"]
 }
