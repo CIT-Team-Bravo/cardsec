@@ -54,6 +54,7 @@ dependencies {
     testCompile("org.powermock:powermock-api-mockito:1.6.4")
     testCompile("org.powermock:powermock-classloading-xstream:1.6.4")
     testCompile("com.github.stefanbirkner:fishbowl:1.4.1")
+    testCompile('nl.jqno.equalsverifier:equalsverifier:2.4')
 }
 
 jacocoTestReport {

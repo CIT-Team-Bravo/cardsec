@@ -9,6 +9,7 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import ie.cit.teambravo.cardsec.dto.LatLngAlt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,10 +34,11 @@ public class DurationServiceImpl implements DurationService {
         this.geoApiContext = geoApiContext;
     }
 
+    @Cacheable(value = "travelDuration", key= "{#startPosition.hashCode(), #endPosition.hashCode()}")
     public Long getTravelTimeBetween2Points(LatLngAlt startPosition, LatLngAlt endPosition) {
         List<CompletableFuture<Long>> durationCalculations =
-                Stream.of(TravelMode.DRIVING, TravelMode.BICYCLING, TravelMode.WALKING).
-                        map(mode -> computeDurationAsync(startPosition.getLatLng(), endPosition.getLatLng(), mode))
+                Stream.of(TravelMode.DRIVING, TravelMode.BICYCLING, TravelMode.WALKING)
+                        .map(mode -> computeDurationAsync(startPosition.getLatLng(), endPosition.getLatLng(), mode))
                         .collect(Collectors.toList());
 
         CompletableFuture<List<Long>> computedDurations =
