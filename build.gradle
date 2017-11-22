@@ -40,20 +40,23 @@ dependencies {
     // Google Maps API
     compile('com.google.maps:google-maps-services:0.2.5')
 
- 	compile('com.fasterxml.jackson.core:jackson-core:2.9.2')
+ 	// Messaging
     compile('org.springframework.integration:spring-integration-mqtt:4.3.12.RELEASE')
 
     // Database
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.h2database:h2")
 
+	// JSON
+	compile('com.github.java-json-tools:json-schema-validator:2.2.8')
+	compile('com.fasterxml.jackson.core:jackson-core:2.9.2')
+	
     // Testing
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.powermock:powermock-module-junit4:1.6.4")
     testCompile("org.powermock:powermock-module-junit4-rule:1.6.4")
     testCompile("org.powermock:powermock-api-mockito:1.6.4")
     testCompile("org.powermock:powermock-classloading-xstream:1.6.4")
-    testCompile('com.github.java-json-tools:json-schema-validator:2.2.8')
     testCompile('commons-io:commons-io:2.4')
 }
 

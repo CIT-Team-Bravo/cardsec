@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.dto.Location;
 
@@ -21,6 +22,7 @@ import ie.cit.teambravo.cardsec.dto.Location;
 public class ValidationServiceImplTest {
 	private EventService eventServiceMock;
 	private PanelLocatorService panelLocatorServiceMock;
+	private AlertService alertServiceMock;
 
 	private ValidationService validationService;
 
@@ -28,8 +30,9 @@ public class ValidationServiceImplTest {
 	public void setup() {
 		eventServiceMock = Mockito.mock(EventService.class);
 		panelLocatorServiceMock = Mockito.mock(PanelLocatorService.class);
+		alertServiceMock = Mockito.mock(AlertService.class);
 
-		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock);
+		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock, alertServiceMock);
 	}
 
 	@Test

@@ -1,6 +1,8 @@
 package ie.cit.teambravo.cardsec.alerts;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -55,6 +57,50 @@ public class MessagingAlertDistributorTest {
 
 		ProcessingReport result = schema.validate(mapper.readTree(jsonPayload), true);
 		assertTrue(result.toString(), result.isSuccess());
+	}
+
+	@Test
+	public void generateAlert_when_calledWithNullCurrentEvent_then_throwsException() throws Exception {
+		// Arrange
+		Event currentEvent = generateTestEvent();
+
+		// Act
+		try {
+			messagingAlertDistributor.generateAlert(null, currentEvent);
+			fail("Expected an exception here, because the currentEvent was null");
+		} catch (Exception e) {
+			// Assert
+			assertEquals("Error publishing alert message", e.getMessage());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+		}
+
+	}
+
+	@Test
+	public void generateAlert_when_calledWithNullPreviousEvent_then_throwsException() throws Exception {
+		// Arrange
+		Event previousEvent = generateTestEvent();
+
+		// Act
+		try {
+			messagingAlertDistributor.generateAlert(null, previousEvent);
+			fail("Expected an exception here, because the previousEvent was null");
+		} catch (Exception e) {
+			// Assert
+			assertEquals("Error publishing alert message", e.getMessage());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+		}
+
+	}
+
+	@Test
+	public void generateAlert_when_calledWithIncompleteCurrentEvent_then_throwsException() throws Exception {
+		try {
+			messagingAlertDistributor.generateAlert(null, null);
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	@Test
