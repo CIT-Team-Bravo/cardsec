@@ -34,11 +34,13 @@ public class DurationServiceImpl implements DurationService {
         this.geoApiContext = geoApiContext;
     }
 
-    @Cacheable(value = "travelDuration", key= "{#startPosition.hashCode(), #endPosition.hashCode()}")
-    public Long getTravelTimeBetween2Points(LatLngAlt startPosition, LatLngAlt endPosition) {
+    @Cacheable(value = "travelDuration", key= "{#start.getId(), #end.getId()}")
+    public Long getTravelTimeBetween2Points(LatLngAlt start, LatLngAlt end) {
+        LatLng startPoint = new LatLng(start.getLat(), start.getLng());
+        LatLng endPoint = new LatLng(end.getLat(), end.getLng());
         List<CompletableFuture<Long>> durationCalculations =
                 Stream.of(TravelMode.DRIVING, TravelMode.BICYCLING, TravelMode.WALKING)
-                        .map(mode -> computeDurationAsync(startPosition.getLatLng(), endPosition.getLatLng(), mode))
+                        .map(mode -> computeDurationAsync(startPoint, endPoint, mode))
                         .collect(Collectors.toList());
 
         CompletableFuture<List<Long>> computedDurations =
@@ -53,7 +55,14 @@ public class DurationServiceImpl implements DurationService {
             }
         }));
 
-        return minDuration(computedDurations);
+        Double altitudeDiff = Math.abs(start.getAltitude() - end.getAltitude());
+
+        /*
+         * Assuming altitude is in metres and a metre takes 2 seconds to walk...
+         */
+        Long altitudeTravelDuration = altitudeDiff.longValue() * 2;
+
+        return minDuration(computedDurations, altitudeTravelDuration);
     }
 
     private CompletableFuture<Long> computeDurationAsync(LatLng start, LatLng end, TravelMode mode) {
@@ -80,9 +89,10 @@ public class DurationServiceImpl implements DurationService {
         }
     }
 
-    private Long minDuration(CompletableFuture<List<Long>> computedDuration) {
+    private Long minDuration(CompletableFuture<List<Long>> computedDuration, Long altitudeDuration) {
         try {
             List<Long> durations = computedDuration.get();
+            durations.add(altitudeDuration);
             return Collections.min(durations);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

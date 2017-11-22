@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -47,8 +48,10 @@ public class DurationServiceImplTests {
 	@Test
 	public void should_get_travel_duration_between_2_points() throws Exception {
 		// Arrange
-		LatLngAlt start = new LatLngAlt(new LatLng(14, 22), 10);
-		LatLngAlt end = new LatLngAlt(new LatLng(15, 10), 10);
+		LatLng start = new LatLng(14, 22);
+		LatLng end = new LatLng(15, 10);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10000);
+		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
 		Duration computedDuration = new Duration();
 		computedDuration.inSeconds = 1000;
 		DistanceMatrixElement element = new DistanceMatrixElement();
@@ -70,8 +73,8 @@ public class DurationServiceImplTests {
 
 		DistanceMatrixApiRequest distanceMatrixApiRequest = mock(DistanceMatrixApiRequest.class);
 		mockStatic(DistanceMatrixApi.class);
-		when(distanceMatrixApiRequest.origins(start.getLatLng())).thenReturn(distanceMatrixApiRequest);
-		when(distanceMatrixApiRequest.destinations(end.getLatLng())).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.origins(any(LatLng.class))).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.destinations(any(LatLng.class))).thenReturn(distanceMatrixApiRequest);
 		when(distanceMatrixApiRequest.mode(TravelMode.DRIVING)).thenReturn(distanceMatrixApiRequest);
 		when(distanceMatrixApiRequest.mode(TravelMode.WALKING)).thenReturn(distanceMatrixApiRequest);
 		when(distanceMatrixApiRequest.mode(TravelMode.BICYCLING)).thenReturn(distanceMatrixApiRequest);
@@ -80,7 +83,7 @@ public class DurationServiceImplTests {
 		when(DistanceMatrixApi.newRequest(geoApiContext)).thenReturn(distanceMatrixApiRequest);
 
 		// Act
-		Long duration = distanceService.getTravelTimeBetween2Points(start, end);
+		Long duration = distanceService.getTravelTimeBetween2Points(start3d, end3d);
 
 		// Assert
 		assertNotNull(duration);
@@ -90,8 +93,10 @@ public class DurationServiceImplTests {
 	@Test
 	public void should_return_minimum_duration_of_travel_modes() throws Exception {
 		// Arrange
-		LatLngAlt start = new LatLngAlt(new LatLng(14, 22), 10);
-		LatLngAlt end = new LatLngAlt(new LatLng(15, 10), 10);
+		LatLng start = new LatLng(14, 22);
+		LatLng end = new LatLng(15, 10);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10000);
+		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
 		long nonDrivingDuration = 1000L;
 		long drivingDuration = 100L;
 
@@ -99,11 +104,11 @@ public class DurationServiceImplTests {
 		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration);
 
 		DistanceMatrixApiRequest drivingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.DRIVING, drivingDistanceMatrix);
+				TravelMode.DRIVING, drivingDistanceMatrix);
 		DistanceMatrixApiRequest walkingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.WALKING, nonDrivingDistanceMatrix);
+				TravelMode.WALKING, nonDrivingDistanceMatrix);
 		DistanceMatrixApiRequest bikingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.BICYCLING, nonDrivingDistanceMatrix);
+				TravelMode.BICYCLING, nonDrivingDistanceMatrix);
 
 		mockStatic(DistanceMatrixApi.class);
 		when(DistanceMatrixApi.newRequest(geoApiContext)).thenReturn(drivingDistanceRequest);
@@ -111,7 +116,7 @@ public class DurationServiceImplTests {
 		when(DistanceMatrixApi.newRequest(geoApiContext).mode(TravelMode.BICYCLING)).thenReturn(bikingDistanceRequest);
 
 		// Act
-		Long duration = distanceService.getTravelTimeBetween2Points(start, end);
+		Long duration = distanceService.getTravelTimeBetween2Points(start3d, end3d);
 
 		// Assert
 		assertNotNull(duration);
@@ -121,8 +126,10 @@ public class DurationServiceImplTests {
 	@Test
 	public void should_throw_exception_if_computing_duration_fails() throws Exception {
 		// Arrange
-		LatLngAlt start = new LatLngAlt(new LatLng(14, 22), 10);
-		LatLngAlt end = new LatLngAlt(new LatLng(15, 10), 10);
+		LatLng start = new LatLng(14, 22);
+		LatLng end = new LatLng(15, 10);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10);
+		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
 		long nonDrivingDuration = 1000L;
 		long drivingDuration = 100L;
 
@@ -130,12 +137,11 @@ public class DurationServiceImplTests {
 		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration);
 
 		DistanceMatrixApiRequest drivingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.DRIVING, drivingDistanceMatrix);
-
+				TravelMode.DRIVING, drivingDistanceMatrix);
 		DistanceMatrixApiRequest walkingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.WALKING, nonDrivingDistanceMatrix);
+				TravelMode.WALKING, nonDrivingDistanceMatrix);
 		DistanceMatrixApiRequest bikingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
-				start.getLatLng(), end.getLatLng(), TravelMode.BICYCLING, nonDrivingDistanceMatrix);
+				TravelMode.BICYCLING, nonDrivingDistanceMatrix);
 
 		mockStatic(DistanceMatrixApi.class);
 		when(DistanceMatrixApi.newRequest(geoApiContext)).thenReturn(drivingDistanceRequest);
@@ -145,13 +151,14 @@ public class DurationServiceImplTests {
 
 		// Act
 		Throwable exception = Fishbowl.exceptionThrownBy(() -> {
-			distanceService.getTravelTimeBetween2Points(start, end);
+			distanceService.getTravelTimeBetween2Points(start3d, end3d);
 		});
 
 		// Assert
 		assertEquals(RuntimeException.class, exception.getClass());
 		assertEquals("Failed to compute duration", exception.getMessage());
-		assertEquals("java.lang.RuntimeException: Computing driving duration failed", exception.getCause().getLocalizedMessage());
+		assertEquals("java.lang.RuntimeException: Computing driving duration failed",
+				exception.getCause().getLocalizedMessage());
 	}
 
 	private DistanceMatrix buildDistanceMatrix(long duration) throws InterruptedException, ApiException, IOException {
@@ -176,10 +183,10 @@ public class DurationServiceImplTests {
 		return new DistanceMatrix(startLoc, endLoc, distanceMatrixRows);
 	}
 
-	private DistanceMatrixApiRequest setupApiRequestMock(DistanceMatrixApiRequest request, LatLng start, LatLng end,
-			TravelMode mode, DistanceMatrix matrix) throws InterruptedException, ApiException, IOException {
-		when(request.origins(start)).thenReturn(request);
-		when(request.destinations(end)).thenReturn(request);
+	private DistanceMatrixApiRequest setupApiRequestMock(DistanceMatrixApiRequest request, TravelMode mode,
+			DistanceMatrix matrix) throws InterruptedException, ApiException, IOException {
+		when(request.origins(any(LatLng.class))).thenReturn(request);
+		when(request.destinations(any(LatLng.class))).thenReturn(request);
 		when(request.mode(mode)).thenReturn(request);
 		when(request.await()).thenReturn(matrix);
 		return request;
