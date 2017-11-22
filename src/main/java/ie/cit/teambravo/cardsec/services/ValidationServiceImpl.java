@@ -23,6 +23,7 @@ public class ValidationServiceImpl implements ValidationService {
 	    this.eventService = eventService;
 	    this.panelLocatorService = panelLocatorService;
 	    this.durationService = durationService;
+
 	}
 
 	@Override
@@ -37,6 +38,10 @@ public class ValidationServiceImpl implements ValidationService {
 		// eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
 		durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
 				new LatLngAlt(33.94, -118.40, 10.0));
+
+		eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
+
+
 		eventService.saveEvent(eventDto);
 
 		if (Boolean.TRUE.equals(allowed)) {

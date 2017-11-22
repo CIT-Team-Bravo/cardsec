@@ -21,6 +21,7 @@ import ie.cit.teambravo.cardsec.dto.LocationDto;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
+
 	@Mock
 	private EventService eventServiceMock;
 	@Mock

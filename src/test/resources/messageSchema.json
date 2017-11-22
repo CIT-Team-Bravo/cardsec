@@ -1,0 +1,16 @@
+{
+    "title": "Alert",
+    "type": "object",
+    "properties": {
+        "severity": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        }
+    },
+    "required": ["severity", "title"]
+}
