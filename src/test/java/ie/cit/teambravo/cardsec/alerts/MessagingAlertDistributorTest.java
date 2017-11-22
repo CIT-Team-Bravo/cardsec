@@ -1,6 +1,8 @@
 package ie.cit.teambravo.cardsec.alerts;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -33,9 +35,10 @@ public class MessagingAlertDistributorTest {
 	@Before
 	public void setup() throws ProcessingException {
 		mockEventGateway = Mockito.mock(MessageGateway.class);
-		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
 		schema = JsonSchemaFactory.byDefault().getJsonSchema("resource:/messageSchema.json");
 		mapper = new ObjectMapper();
+		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
+
 	}
 
 	@Test
@@ -55,6 +58,23 @@ public class MessagingAlertDistributorTest {
 
 		ProcessingReport result = schema.validate(mapper.readTree(jsonPayload), true);
 		assertTrue(result.toString(), result.isSuccess());
+	}
+
+	@Test
+	public void generateAlert_when_calledWithBadArguments_then_throwsException() {
+		// Arrange
+		Event currentEvent = generateTestEvent();
+
+		// Act
+		try {
+			messagingAlertDistributor.generateAlert(currentEvent, null);
+			fail("Expected an exception here, because the previousEvent was null");
+		} catch (Exception e) {
+			// Assert
+			assertEquals("Error publishing alert message", e.getMessage());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+		}
+
 	}
 
 	@Test

@@ -3,7 +3,6 @@ package ie.cit.teambravo.cardsec.services;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -71,8 +70,7 @@ public class DurationServiceImpl implements DurationService {
 					.destinations(end).await();
 
 			List<Long> travelInfo = Arrays.stream(matrix.rows)
-					.flatMap(row -> Arrays.stream(row.elements)
-							.map(element -> element.duration.inSeconds))
+					.flatMap(row -> Arrays.stream(row.elements).map(element -> element.duration.inSeconds))
 					.collect(Collectors.toList());
 
 			return travelInfo.get(0);
