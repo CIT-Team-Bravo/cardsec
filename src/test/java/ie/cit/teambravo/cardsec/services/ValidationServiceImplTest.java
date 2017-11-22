@@ -2,6 +2,7 @@ package ie.cit.teambravo.cardsec.services;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,7 +12,8 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ie.cit.teambravo.cardsec.dto.Event;
@@ -19,17 +21,20 @@ import ie.cit.teambravo.cardsec.dto.Location;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
-	private EventService eventServiceMock;
-	private PanelLocatorService panelLocatorServiceMock;
 
-	private ValidationService validationService;
+	@Mock
+	private EventService eventServiceMock;
+	@Mock
+	private PanelLocatorService panelLocatorServiceMock;
+	@Mock
+	private DurationService durationServiceMock;
+	@InjectMocks
+	private ValidationService validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock,
+			durationServiceMock);
 
 	@Before
 	public void setup() {
-		eventServiceMock = Mockito.mock(EventService.class);
-		panelLocatorServiceMock = Mockito.mock(PanelLocatorService.class);
-
-		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock);
+		when(durationServiceMock.getTravelTimeBetween2Points(anyObject(), anyObject())).thenReturn(1L);
 	}
 
 	@Test

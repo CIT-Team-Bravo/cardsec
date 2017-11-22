@@ -4,17 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
 	private EventService eventService;
+
 	private PanelLocatorService panelLocatorService;
 
+	private DurationService durationService;
+
 	@Autowired
-	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService) {
+	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
+			DurationService durationService) {
 		this.eventService = eventService;
 		this.panelLocatorService = panelLocatorService;
+		this.durationService = durationService;
+
 	}
 
 	@Override
@@ -27,7 +34,8 @@ public class ValidationServiceImpl implements ValidationService {
 		eventDto.setAccessAllowed(allowed);
 		eventDto.setTimestamp(System.currentTimeMillis());
 		eventDto.setLocation(panelLocatorService.getPanelLocation(panelId));
-
+		durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
+				new LatLngAlt(33.94, -118.40, 10.0));
 		eventService.saveEvent(eventDto);
 
 		if (Boolean.TRUE.equals(allowed)) {
