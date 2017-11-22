@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.dto;
+package ie.cit.teambravo.cardsec.model;
 
 import java.util.Objects;
 

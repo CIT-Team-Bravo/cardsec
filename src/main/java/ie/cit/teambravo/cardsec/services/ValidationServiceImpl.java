@@ -5,10 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.maps.model.LatLng;
-
 import ie.cit.teambravo.cardsec.dto.EventDto;
-import ie.cit.teambravo.cardsec.dto.LatLngAlt;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {

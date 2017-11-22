@@ -11,6 +11,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import java.io.IOException;
 
+import com.google.maps.model.Distance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +32,7 @@ import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
-import ie.cit.teambravo.cardsec.dto.LatLngAlt;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
@@ -50,12 +51,15 @@ public class DurationServiceImplTests {
 		// Arrange
 		LatLng start = new LatLng(14, 22);
 		LatLng end = new LatLng(15, 10);
-		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10000);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10);
 		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
+
 		Duration computedDuration = new Duration();
 		computedDuration.inSeconds = 1000;
+
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
+
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
 				element
@@ -166,6 +170,8 @@ public class DurationServiceImplTests {
 		computedDuration.inSeconds = duration;
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
+		Distance computedDistance = new Distance();
+		computedDistance.inMeters = 100000;
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
 				element
