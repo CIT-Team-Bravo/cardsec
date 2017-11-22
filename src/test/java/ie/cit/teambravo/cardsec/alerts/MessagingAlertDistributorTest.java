@@ -35,9 +35,10 @@ public class MessagingAlertDistributorTest {
 	@Before
 	public void setup() throws ProcessingException {
 		mockEventGateway = Mockito.mock(MessageGateway.class);
-		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
 		schema = JsonSchemaFactory.byDefault().getJsonSchema("resource:/messageSchema.json");
 		mapper = new ObjectMapper();
+		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
+
 	}
 
 	@Test
@@ -60,45 +61,18 @@ public class MessagingAlertDistributorTest {
 	}
 
 	@Test
-	public void generateAlert_when_calledWithNullCurrentEvent_then_throwsException() throws Exception {
+	public void generateAlert_when_calledWithBadArguments_then_throwsException() throws Exception {
 		// Arrange
 		Event currentEvent = generateTestEvent();
 
 		// Act
 		try {
-			messagingAlertDistributor.generateAlert(null, currentEvent);
-			fail("Expected an exception here, because the currentEvent was null");
-		} catch (Exception e) {
-			// Assert
-			assertEquals("Error publishing alert message", e.getMessage());
-			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
-		}
-
-	}
-
-	@Test
-	public void generateAlert_when_calledWithNullPreviousEvent_then_throwsException() throws Exception {
-		// Arrange
-		Event previousEvent = generateTestEvent();
-
-		// Act
-		try {
-			messagingAlertDistributor.generateAlert(null, previousEvent);
+			messagingAlertDistributor.generateAlert(currentEvent, null);
 			fail("Expected an exception here, because the previousEvent was null");
 		} catch (Exception e) {
 			// Assert
 			assertEquals("Error publishing alert message", e.getMessage());
 			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
-		}
-
-	}
-
-	@Test
-	public void generateAlert_when_calledWithIncompleteCurrentEvent_then_throwsException() throws Exception {
-		try {
-			messagingAlertDistributor.generateAlert(null, null);
-		} catch (Exception e) {
-
 		}
 
 	}
