@@ -10,7 +10,91 @@
         },
         "description": {
             "type": "string"
+        },
+        "currentEvent": {
+        	"type": "object",
+        	"properties": {
+        		"panelId": {
+        		 	"type": "string"
+        		 },
+				"cardId": {
+        		 	"type": "string"
+        		 },
+				"timestamp": {
+        		 	"type": "integer"
+        		 },
+        		 "location": {
+        		 	"type": "object",
+        		 	"properties": {
+        		 		"coordinates": {
+        		 			"type": "object",
+        		 			"properties": {
+        		 				"longitude": {
+            						"type": "number"
+        						},
+        						"latitude": {
+            						"type": "number"
+        						}
+        		 			},
+        		 			"required": ["longitude", "latitude"]
+        		 		}	
+        		 	},
+        		 	"required": ["coordinates"]
+				},
+				"altitude": {
+        		 	"type": "integer"
+        		},
+        		"relativeLocation": {
+					"type": "string"
+        		},
+				"accessAllowed": {
+        			"type": "boolean" 
+				}
+        	},
+        	"required": ["panelId", "cardId", "timestamp", "location", "accessAllowed"]
+        },
+         "previousEvent": {
+        	"type": "object",
+        	"properties": {
+        		"panelId": {
+        		 	"type": "string"
+        		 },
+				"cardId": {
+        		 	"type": "string"
+        		 },
+				"timestamp": {
+        		 	"type": "integer"
+        		 },
+        		 "location": {
+        		 	"type": "object",
+        		 	"properties": {
+        		 		"coordinates": {
+        		 			"type": "object",
+        		 			"properties": {
+        		 				"longitude": {
+            						"type": "number"
+        						},
+        						"latitude": {
+            						"type": "number"
+        						}
+        		 			},
+        		 			"required": ["longitude", "latitude"]
+        		 		}	
+        		 	},
+        		 	"required": ["coordinates"]
+				},
+				"altitude": {
+        		 	"type": "integer"
+        		},
+        		"relativeLocation": {
+					"type": "string"
+        		},
+				"accessAllowed": {
+        			"type": "boolean" 
+				}
+        	},
+        	"required": ["panelId", "cardId", "timestamp", "location", "accessAllowed"]
         }
     },
-    "required": ["severity", "title"]
+    "required": ["severity", "title", "description", "currentEvent", "previousEvent"]
 }

@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class EventDto {
+public class Event {
 
 	@Id
 	@GeneratedValue(generator = "system-uuid")
@@ -17,12 +17,12 @@ public class EventDto {
 	private String id;
 	private String panelId;
 	private String cardId;
-	private String timestamp;
+	private long timestamp;
 
 	@OneToOne(cascade = {
 			CascadeType.ALL
 	})
-	private LocationDto locationDto;
+	private Location location;
 	private Boolean accessAllowed;
 
 	public String getId() {
@@ -49,20 +49,20 @@ public class EventDto {
 		this.cardId = cardId;
 	}
 
-	public String getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	public LocationDto getLocationDto() {
-		return locationDto;
+	public Location getLocation() {
+		return location;
 	}
 
-	public void setLocationDto(LocationDto locationDto) {
-		this.locationDto = locationDto;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	public Boolean getAccessAllowed() {

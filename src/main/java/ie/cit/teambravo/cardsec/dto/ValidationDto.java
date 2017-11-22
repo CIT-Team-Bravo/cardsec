@@ -3,8 +3,8 @@ package ie.cit.teambravo.cardsec.dto;
 public class ValidationDto {
     private String reason;
     private boolean validEvent;
-    private EventDto currentEvent;
-    private EventDto previousEvent;
+    private Event currentEvent;
+    private Event previousEvent;
 
     public String getReason() {
         return reason;
@@ -22,19 +22,19 @@ public class ValidationDto {
         this.validEvent = validEvent;
     }
 
-    public EventDto getCurrentEvent() {
+    public Event getCurrentEvent() {
         return currentEvent;
     }
 
-    public void setCurrentEvent(EventDto currentEvent) {
+    public void setCurrentEvent(Event currentEvent) {
         this.currentEvent = currentEvent;
     }
 
-    public EventDto getPreviousEvent() {
+    public Event getPreviousEvent() {
         return previousEvent;
     }
 
-    public void setPreviousEvent(EventDto previousEvent) {
+    public void setPreviousEvent(Event previousEvent) {
         this.previousEvent = previousEvent;
     }
 }
