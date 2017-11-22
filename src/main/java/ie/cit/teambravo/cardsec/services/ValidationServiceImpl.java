@@ -25,18 +25,20 @@ public class ValidationServiceImpl implements ValidationService {
 	public boolean validate(String panelId, String cardId, Boolean allowed) {
 
 		// Placeholder for adding events to database
-		Event eventDto = new Event();
-		eventDto.setPanelId(panelId);
-		eventDto.setCardId(cardId);
-		eventDto.setAccessAllowed(allowed);
-		eventDto.setTimestamp(System.currentTimeMillis());
-		eventDto.setLocation(panelLocatorService.getPanelLocation(panelId));
+		Event event = new Event();
+		event.setPanelId(panelId);
+		event.setCardId(cardId);
+		event.setAccessAllowed(allowed);
+		event.setTimestamp(System.currentTimeMillis());
+		event.setLocation(panelLocatorService.getPanelLocation(panelId));
 
-		eventService.saveEvent(eventDto);
+		eventService.saveEvent(event);
 
 		if (Boolean.TRUE.equals(allowed)) {
 			return true;
 		}
+
+		alertService.generateAlert(event, event);
 
 		return false;
 	}
