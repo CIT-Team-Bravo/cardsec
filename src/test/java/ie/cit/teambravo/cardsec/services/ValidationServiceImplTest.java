@@ -23,7 +23,7 @@ public class ValidationServiceImplTest {
 	private EventService eventServiceMock;
 	private PanelLocatorService panelLocatorServiceMock;
 	private AlertService alertServiceMock;
-
+	private DurationService durationServiceMock;
 	private ValidationService validationService;
 
 	@Before
@@ -31,8 +31,9 @@ public class ValidationServiceImplTest {
 		eventServiceMock = Mockito.mock(EventService.class);
 		panelLocatorServiceMock = Mockito.mock(PanelLocatorService.class);
 		alertServiceMock = Mockito.mock(AlertService.class);
+		durationServiceMock = Mockito.mock(DurationService.class);
 
-		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock, alertServiceMock);
+		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock);
 	}
 
 	@Test
