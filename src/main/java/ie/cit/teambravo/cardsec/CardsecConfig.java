@@ -1,11 +1,9 @@
 package ie.cit.teambravo.cardsec;
 
-import com.google.maps.GeoApiContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
@@ -13,6 +11,8 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+
+import com.google.maps.GeoApiContext;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -24,47 +24,42 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class CardsecConfig {
 
-    @Value("${google.api.distance.key}")
-    private String API_KEY;
+	@Value("${google.api.distance.key}")
+	private String API_KEY;
+	@Value("${mqtt.server.host}")
+	private String host;
+	@Value("${mqtt.server.port}")
+	private String port;
 
-    @Bean
-    public MqttPahoClientFactory mqttClientFactory() {
-        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-        factory.setServerURIs("tcp://host1:1883");
-        factory.setUserName("username");
-        factory.setPassword("password");
-        return factory;
-    }
+	@Bean
+	public MqttPahoClientFactory mqttClientFactory() {
+		DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+		factory.setServerURIs(String.format("tcp://%s:%s", host, port));
+		return factory;
+	}
 
-    @Bean
-    @ServiceActivator(inputChannel = "mqttOutboundChannel")
-    public MessageHandler mqttOutbound() {
-        MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("testClient", mqttClientFactory());
-        messageHandler.setAsync(true);
-        messageHandler.setDefaultTopic("testTopic");
-        return messageHandler;
-    }
+	@Bean
+	@ServiceActivator(inputChannel = "mqttOutboundChannel")
+	public MessageHandler mqttOutbound() {
+		MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("testClient", mqttClientFactory());
+		messageHandler.setAsync(true);
+		messageHandler.setDefaultTopic("testTopic");
+		return messageHandler;
+	}
 
-    @Bean
-    public MessageChannel mqttOutboundChannel() {
-        return new DirectChannel();
-    }
+	@Bean
+	public MessageChannel mqttOutboundChannel() {
+		return new DirectChannel();
+	}
 
-    @MessagingGateway(defaultRequestChannel = "mqttOutboundChannel")
-    public interface MyGateway {
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any()).build();
+	}
 
-        void sendToMqtt(String data);
-
-    }
-
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any()).build();
-    }
-
-    @Bean
-    public GeoApiContext geoApiContext(ApplicationContext ctx) {
-        return new GeoApiContext.Builder().apiKey(API_KEY).build();
-    }
+	@Bean
+	public GeoApiContext geoApiContext(ApplicationContext ctx) {
+		return new GeoApiContext.Builder().apiKey(API_KEY).build();
+	}
 }
