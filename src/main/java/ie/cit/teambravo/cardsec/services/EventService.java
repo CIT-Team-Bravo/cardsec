@@ -1,7 +1,7 @@
 package ie.cit.teambravo.cardsec.services;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.dto.Event;
 
 public interface EventService {
-    EventDto saveEvent(EventDto eventDto);
+    Event saveEvent(Event eventDto);
 }

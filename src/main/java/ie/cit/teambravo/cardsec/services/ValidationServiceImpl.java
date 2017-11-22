@@ -3,7 +3,7 @@ package ie.cit.teambravo.cardsec.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.dto.Event;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -21,12 +21,12 @@ public class ValidationServiceImpl implements ValidationService {
 	public boolean validate(String panelId, String cardId, Boolean allowed) {
 
 		// Placeholder for adding events to database
-		EventDto eventDto = new EventDto();
+		Event eventDto = new Event();
 		eventDto.setPanelId(panelId);
 		eventDto.setCardId(cardId);
 		eventDto.setAccessAllowed(allowed);
 		eventDto.setTimestamp(System.currentTimeMillis());
-		eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
+		eventDto.setLocation(panelLocatorService.getPanelLocation(panelId));
 
 		eventService.saveEvent(eventDto);
 

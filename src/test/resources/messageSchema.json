@@ -22,8 +22,36 @@
         		 },
 				"timestamp": {
         		 	"type": "integer"
-        		 }
-        	}
+        		 },
+        		 "location": {
+        		 	"type": "object",
+        		 	"properties": {
+        		 		"coordinates": {
+        		 			"type": "object",
+        		 			"properties": {
+        		 				"longitude": {
+            						"type": "number"
+        						},
+        						"latitude": {
+            						"type": "number"
+        						}
+        		 			},
+        		 			"required": ["longitude", "latitude"]
+        		 		}	
+        		 	},
+        		 	"required": ["coordinates"]
+				},
+				"altitude": {
+        		 	"type": "integer"
+        		},
+        		"relativeLocation": {
+					"type": "string"
+        		},
+				"accessAllowed": {
+        			"type": "boolean" 
+				}
+        	},
+        	"required": ["panelId", "cardId", "timestamp", "location", "accessAllowed"]
         },
          "previousEvent": {
         	"type": "object",
@@ -36,9 +64,37 @@
         		 },
 				"timestamp": {
         		 	"type": "integer"
-        		 }
-        	}
+        		 },
+        		 "location": {
+        		 	"type": "object",
+        		 	"properties": {
+        		 		"coordinates": {
+        		 			"type": "object",
+        		 			"properties": {
+        		 				"longitude": {
+            						"type": "number"
+        						},
+        						"latitude": {
+            						"type": "number"
+        						}
+        		 			},
+        		 			"required": ["longitude", "latitude"]
+        		 		}	
+        		 	},
+        		 	"required": ["coordinates"]
+				},
+				"altitude": {
+        		 	"type": "integer"
+        		},
+        		"relativeLocation": {
+					"type": "string"
+        		},
+				"accessAllowed": {
+        			"type": "boolean" 
+				}
+        	},
+        	"required": ["panelId", "cardId", "timestamp", "location", "accessAllowed"]
         }
     },
-    "required": ["severity", "title", "description", "currentEvent"]
+    "required": ["severity", "title", "description", "currentEvent", "previousEvent"]
 }
