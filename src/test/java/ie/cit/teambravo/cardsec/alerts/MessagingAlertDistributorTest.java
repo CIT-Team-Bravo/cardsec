@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -36,7 +38,14 @@ public class MessagingAlertDistributorTest {
 	public void generateAlert_when_called_then_theMessageIsFormattedCorrectly() throws Exception {
 		// Arrange
 		EventDto currentEvent = new EventDto();
+		currentEvent.setPanelId(UUID.randomUUID().toString());
+		currentEvent.setCardId(UUID.randomUUID().toString());
+		currentEvent.setTimestamp(System.currentTimeMillis());
+
 		EventDto previousEvent = new EventDto();
+		previousEvent.setPanelId(UUID.randomUUID().toString());
+		previousEvent.setCardId(UUID.randomUUID().toString());
+		previousEvent.setTimestamp(System.currentTimeMillis());
 
 		ArgumentCaptor<AlertMessage> captor = ArgumentCaptor.forClass(AlertMessage.class);
 
@@ -48,6 +57,6 @@ public class MessagingAlertDistributorTest {
 		String jsonPayload = captor.getValue().getPayload();
 
 		ProcessingReport result = schema.validate(mapper.readTree(jsonPayload), true);
-		assertTrue(result.isSuccess());
+		assertTrue(result.toString(), result.isSuccess());
 	}
 }

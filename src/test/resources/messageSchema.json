@@ -10,7 +10,35 @@
         },
         "description": {
             "type": "string"
+        },
+        "currentEvent": {
+        	"type": "object",
+        	"properties": {
+        		"panelId": {
+        		 	"type": "string"
+        		 },
+				"cardId": {
+        		 	"type": "string"
+        		 },
+				"timestamp": {
+        		 	"type": "integer"
+        		 }
+        	}
+        },
+         "previousEvent": {
+        	"type": "object",
+        	"properties": {
+        		"panelId": {
+        		 	"type": "string"
+        		 },
+				"cardId": {
+        		 	"type": "string"
+        		 },
+				"timestamp": {
+        		 	"type": "integer"
+        		 }
+        	}
         }
     },
-    "required": ["severity", "title", "description"]
+    "required": ["severity", "title", "description", "currentEvent"]
 }

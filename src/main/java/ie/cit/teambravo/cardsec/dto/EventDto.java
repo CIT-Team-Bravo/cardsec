@@ -17,7 +17,7 @@ public class EventDto {
 	private String id;
 	private String panelId;
 	private String cardId;
-	private String timestamp;
+	private long timestamp;
 
 	@OneToOne(cascade = {
 			CascadeType.ALL
@@ -49,11 +49,11 @@ public class EventDto {
 		this.cardId = cardId;
 	}
 
-	public String getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
 

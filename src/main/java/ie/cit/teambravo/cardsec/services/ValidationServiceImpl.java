@@ -1,7 +1,5 @@
 package ie.cit.teambravo.cardsec.services;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,7 @@ public class ValidationServiceImpl implements ValidationService {
 		eventDto.setPanelId(panelId);
 		eventDto.setCardId(cardId);
 		eventDto.setAccessAllowed(allowed);
-		eventDto.setTimestamp(new Date().toString());
+		eventDto.setTimestamp(System.currentTimeMillis());
 		eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
 
 		eventService.saveEvent(eventDto);
