@@ -3,7 +3,9 @@ package ie.cit.teambravo.cardsec.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -12,7 +14,6 @@ public class ValidationServiceImpl implements ValidationService {
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
 	private DurationService durationService;
-
 
 	@Autowired
 	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
@@ -33,7 +34,7 @@ public class ValidationServiceImpl implements ValidationService {
 		event.setAccessAllowed(allowed);
 		event.setTimestamp(System.currentTimeMillis());
 		event.setLocation(panelLocatorService.getPanelLocation(panelId));
-		
+
 		durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
 				new LatLngAlt(33.94, -118.40, 10.0));
 
@@ -42,6 +43,8 @@ public class ValidationServiceImpl implements ValidationService {
 		if (Boolean.TRUE.equals(allowed)) {
 			return true;
 		}
+
+		alertService.generateAlert(event, event);
 
 		return false;
 	}

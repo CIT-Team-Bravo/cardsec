@@ -33,7 +33,8 @@ public class ValidationServiceImplTest {
 		alertServiceMock = Mockito.mock(AlertService.class);
 		durationServiceMock = Mockito.mock(DurationService.class);
 
-		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock);
+		validationService = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock, alertServiceMock,
+				durationServiceMock);
 	}
 
 	@Test
