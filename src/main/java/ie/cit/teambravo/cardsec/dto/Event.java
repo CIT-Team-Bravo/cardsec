@@ -1,12 +1,12 @@
 package ie.cit.teambravo.cardsec.dto;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Event {

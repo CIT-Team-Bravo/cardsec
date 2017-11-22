@@ -1,19 +1,10 @@
 package ie.cit.teambravo.cardsec.services;
 
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Date;
-import java.util.UUID;
-
 import com.google.maps.model.DistanceMatrixRow;
 import ie.cit.teambravo.cardsec.dto.Coordinates;
 import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.dto.EventDto;
 import ie.cit.teambravo.cardsec.dto.Location;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +12,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.UUID;
+
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
@@ -41,18 +40,17 @@ public class ValidationServiceImplTest {
 	}
 
     @Test
-    @Test
     public void validate_when_requestIsValid_then_respondWithTrue() {
         // Arrange
         String panelId = UUID.randomUUID().toString();
         String cardId = UUID.randomUUID().toString();
-        EventDto eventToBeSaved = getEventDto(panelId, cardId, true, -0.131913, 51.524774);
+        Event eventToBeSaved = getEvent(panelId, cardId, true, -0.131913, 51.524774);
         eventToBeSaved.setPanelId(panelId);
         eventToBeSaved.setCardId(cardId);
-        EventDto eventDto2 = getEventDto(panelId, cardId, true, -8.4980692, 51.8960528);
+        Event eventDto2 = getEvent(panelId, cardId, true, -8.4980692, 51.8960528);
 
         when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
-        when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
+        when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
         when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
 
         mockDistanceToUclFrom(-8.4980692, 51.8960528); //cork city, fitzgerald's park
@@ -63,7 +61,7 @@ public class ValidationServiceImplTest {
         // Assert & Verify
         assertThat(result, Matchers.is(true));
         verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
-        verify(durationServiceMock).get(-8.4980692, 51.8960528, -0.131913, 51.524774);
+        verify(durationServiceMock).getTravelTimeBetween2Points(new LatLngAlt(0,0,0), new LatLngAlt(0,0,0));
     }
 
     @Test
@@ -74,10 +72,10 @@ public class ValidationServiceImplTest {
         Event eventToBeSaved = new Event();
         eventToBeSaved.setPanelId(panelId);
         eventToBeSaved.setCardId(cardId);
-        Event eventDto1 = getEventDto("panelId", "cardId", true, 0.0D, 0.0D);
-        Event eventDto2 = getEventDto("panelId", "cardId", true, 0.0D, 0.0D);
+        Event eventDto1 = getEvent("panelId", "cardId", true, 0.0D, 0.0D);
+        Event eventDto2 = getEvent("panelId", "cardId", true, 0.0D, 0.0D);
         when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
-        when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new EventDto());
+        when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
         when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
 
         mockDistanceToUclFrom(52.237049, 21.017532); // Warsaw, Poland
@@ -93,16 +91,15 @@ public class ValidationServiceImplTest {
     private void mockDistanceToUclFrom(Double startLat, Double startLong) {
         DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
         DistanceMatrixRow[] distanceMatrixRows = new DistanceMatrixRow[]{distanceMatrixRow};
-        when(distanceServiceMock.get(startLat, startLong, -0.131913, 51.524774)).thenReturn(new DistanceMatrix(new String[]{"start"}, new String[]{"finish"}, distanceMatrixRows));
-
+        when(durationServiceMock.getTravelTimeBetween2Points(new LatLngAlt(0,0,0), new LatLngAlt(0,0,0))).thenReturn(10L);
     }
 
-    private Event getEventDto(String panelId, String cardId, boolean accessAllowed, Double latitude, Double longitude) {
+    private Event getEvent(String panelId, String cardId, boolean accessAllowed, Double latitude, Double longitude) {
         Event eventDto = new Event();
         eventDto.setPanelId(panelId);
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(accessAllowed);
-        eventDto.setTimestamp(new Date());
+        eventDto.setTimestamp(10);
         eventDto.setLocation(getLocationDtoWithCoordinates(latitude, longitude));
         return eventDto;
     }

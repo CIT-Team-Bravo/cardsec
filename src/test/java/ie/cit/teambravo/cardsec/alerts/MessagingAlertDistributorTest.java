@@ -1,27 +1,25 @@
 package ie.cit.teambravo.cardsec.alerts;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.io.File;
-import java.util.UUID;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.main.JsonSchema;
+import com.github.fge.jsonschema.main.JsonSchemaFactory;
+import ie.cit.teambravo.cardsec.dto.Coordinates;
+import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.dto.Location;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
+import java.io.File;
+import java.util.UUID;
 
-import ie.cit.teambravo.cardsec.dto.Coordinates;
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.dto.Location;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class MessagingAlertDistributorTest {
 

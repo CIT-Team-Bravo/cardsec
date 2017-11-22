@@ -19,12 +19,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDto> findByCardId(String cardId) {
+    public List<Event> findByCardId(String cardId) {
         return eventRepository.findByCardId(cardId);
     }
 
     @Override
-    public EventDto findLatestEventByCard(String cardId) {
+    public Event findLatestEventByCard(String cardId) {
         return eventRepository.findFirstByCardIdOrderByTimestampDesc(cardId);
     }
 }

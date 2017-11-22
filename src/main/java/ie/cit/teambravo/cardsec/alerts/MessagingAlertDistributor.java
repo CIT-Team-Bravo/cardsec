@@ -1,11 +1,9 @@
 package ie.cit.teambravo.cardsec.alerts;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import ie.cit.teambravo.cardsec.dto.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import ie.cit.teambravo.cardsec.dto.Event;
 
 @Service
 public class MessagingAlertDistributor {
