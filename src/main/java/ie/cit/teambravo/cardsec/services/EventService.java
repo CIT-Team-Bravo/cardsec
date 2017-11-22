@@ -1,12 +1,12 @@
 package ie.cit.teambravo.cardsec.services;
 
-import ie.cit.teambravo.cardsec.dto.EventDto;
+import ie.cit.teambravo.cardsec.dto.Event;
 
 import java.util.List;
 
 public interface EventService {
-    EventDto saveEvent(EventDto eventDto);
+    Event saveEvent(Event eventDto);
 
-    List<EventDto> findByCardId(String cardId);
-    EventDto findLatestEventByCard(String cardId);
+    List<Event> findByCardId(String cardId);
+    Event findLatestEventByCard(String cardId);
 }

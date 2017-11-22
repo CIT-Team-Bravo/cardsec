@@ -1,45 +1,53 @@
 package ie.cit.teambravo.cardsec.services;
 
-import com.google.maps.model.DistanceMatrix;
-import ie.cit.teambravo.cardsec.dto.EventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.model.LatLngAlt;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private DistanceService distanceService;
+	private EventService eventService;
 
-    @Autowired
-    private PanelLocatorService panelLocatorService;
+	private PanelLocatorService panelLocatorService;
 
-    @Override
-    public boolean validate(String panelId, String cardId, Boolean allowed) {
+	private DurationService durationService;
 
-        // Placeholder for adding events to database
-        EventDto eventDto = new EventDto();
-        eventDto.setPanelId(panelId);
-        eventDto.setCardId(cardId);
-        eventDto.setAccessAllowed(allowed);
-        eventDto.setTimestamp(new Date());
-        eventDto.setLocationDto(panelLocatorService.getPanelLocation(panelId));
-        eventService.saveEvent(eventDto);
+	@Autowired
+	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
+			DurationService durationService) {
+		this.eventService = eventService;
+		this.panelLocatorService = panelLocatorService;
+		this.durationService = durationService;
 
-        EventDto previousEvent = eventService.findLatestEventByCard(cardId);
-        Double prevLat = previousEvent.getLocationDto().getCoordinates().getLatitude();
-        Double prevLong = previousEvent.getLocationDto().getCoordinates().getLongitude();
+	}
 
-        DistanceMatrix distanceBetween2Points = distanceService.getDistanceBetween2Points(prevLat, prevLong, eventDto.getLocationDto().getCoordinates().getLatitude(), eventDto.getLocationDto().getCoordinates().getLongitude());
-        
+	@Override
+	public boolean validate(String panelId, String cardId, Boolean allowed) {
+
+		// Placeholder for adding events to database
+		Event eventDto = new Event();
+		eventDto.setPanelId(panelId);
+		eventDto.setCardId(cardId);
+		eventDto.setAccessAllowed(allowed);
+		eventDto.setTimestamp(System.currentTimeMillis());
+		eventDto.setLocation(panelLocatorService.getPanelLocation(panelId));
+		durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
+				new LatLngAlt(33.94, -118.40, 10.0));
+		eventService.saveEvent(eventDto);
+
+        Event previousEvent = eventService.findLatestEventByCard(cardId);
+        Double prevLat = previousEvent.getLocation().getCoordinates().getLatitude();
+        Double prevLong = previousEvent.getLocation().getCoordinates().getLongitude();
+
+        DistanceMatrix distanceBetween2Points = distanceService.getDistanceBetween2Points(prevLat, prevLong, eventDto.getLocation().getCoordinates().getLatitude(), eventDto.getLocation().getCoordinates().getLongitude());
+
         if (Boolean.TRUE.equals(allowed)) {
             return true;
         }
 
-        return false;
-    }
+		return false;
+	}
 }
