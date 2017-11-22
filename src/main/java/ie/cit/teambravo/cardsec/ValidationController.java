@@ -20,11 +20,11 @@ public class ValidationController {
     @Autowired
     private ValidationService validationService;
 
-    @ApiOperation(value = "Validate panel swipe request", code = 201, response = Boolean.class, httpMethod = "POST")
+    @ApiOperation(value = "Validate panel swipe request", code = 201, response = Boolean.class, httpMethod = "PUT")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Validate panel swipe request", response = Boolean.class),
     })
-    @RequestMapping(value = "/request", method = RequestMethod.POST)
+    @RequestMapping(value = "/request", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Boolean validationRequest(@RequestParam String panelId, @RequestParam String cardId, @RequestParam Boolean allowed) {

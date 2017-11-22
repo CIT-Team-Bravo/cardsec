@@ -13,3 +13,7 @@ https://cardsec.cfapps.io/swagger-ui.html
 
 URL: http://localhost:8080/h2-console
 JDBC: jdbc:h2:mem:AZ
+
+#### Panel Locator API
+
+http://uuidlocator.cfapps.io/api/panels
