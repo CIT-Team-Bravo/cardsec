@@ -12,7 +12,7 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import ie.cit.teambravo.cardsec.dto.Event;
 
 @Service
-public class MessagingAlertDistributor {
+public class MessagingAlertDistributor implements AlertService {
 
 	private MessageGateway eventGateway;
 	private JsonSchema schema;
