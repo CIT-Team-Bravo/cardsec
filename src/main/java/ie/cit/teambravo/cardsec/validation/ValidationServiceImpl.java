@@ -1,4 +1,6 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.validation;
+
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +8,9 @@ import org.springframework.stereotype.Service;
 import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.model.LatLngAlt;
+import ie.cit.teambravo.cardsec.services.DurationService;
+import ie.cit.teambravo.cardsec.services.EventService;
+import ie.cit.teambravo.cardsec.services.PanelLocatorService;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -14,6 +19,7 @@ public class ValidationServiceImpl implements ValidationService {
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
 	private DurationService durationService;
+	private Random random = new Random();
 
 	@Autowired
 	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
@@ -25,7 +31,9 @@ public class ValidationServiceImpl implements ValidationService {
 	}
 
 	@Override
-	public boolean validate(String panelId, String cardId, Boolean allowed) {
+	public ValidationResponse validate(String panelId, String cardId) {
+
+		Boolean allowed = random.nextBoolean();
 
 		// Placeholder for adding events to database
 		Event event = new Event();
@@ -41,11 +49,11 @@ public class ValidationServiceImpl implements ValidationService {
 		eventService.saveEvent(event);
 
 		if (Boolean.TRUE.equals(allowed)) {
-			return true;
+			return null;
 		}
 
 		alertService.generateAlert(event, event);
 
-		return false;
+		return null;
 	}
 }
