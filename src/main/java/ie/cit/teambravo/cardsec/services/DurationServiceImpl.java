@@ -73,8 +73,7 @@ public class DurationServiceImpl implements DurationService {
 
 			return travelInfo.get(0);
 		} catch (ApiException | InterruptedException | IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Computing " + mode.name().toLowerCase() + " duration failed");
+			throw new RuntimeException("Computing " + mode.name().toLowerCase() + " duration failed", e);
 		}
 	}
 
