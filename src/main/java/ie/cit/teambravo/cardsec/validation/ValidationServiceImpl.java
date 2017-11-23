@@ -43,10 +43,16 @@ public class ValidationServiceImpl implements ValidationService {
 		event.setTimestamp(System.currentTimeMillis());
 		event.setLocation(panelLocatorService.getPanelLocation(panelId));
 
-		durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
-				new LatLngAlt(33.94, -118.40, 10.0));
-
 		eventService.saveEvent(event);
+
+		Event previousEvent = eventService.findLatestEventByCard(cardId);
+		Double prevLat = previousEvent.getLocation().getCoordinates().getLatitude();
+		Double prevLong = previousEvent.getLocation().getCoordinates().getLongitude();
+		LatLngAlt prevDetails = new LatLngAlt(prevLat, prevLong, previousEvent.getLocation().getAltitude());
+		LatLngAlt currentDetails = new LatLngAlt(event.getLocation().getCoordinates().getLatitude(),
+				event.getLocation().getCoordinates().getLongitude(), event.getLocation().getAltitude());
+
+		Long distanceBetween2Points = durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
 
 		if (Boolean.TRUE.equals(allowed)) {
 			return null;

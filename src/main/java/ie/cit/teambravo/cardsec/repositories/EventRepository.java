@@ -9,4 +9,6 @@ public interface EventRepository extends CrudRepository<Event, String> {
 
 	List<Event> findByCardId(String cardId);
 
+    Event findFirstByCardIdOrderByTimestampDesc(String cardId);
+
 }
