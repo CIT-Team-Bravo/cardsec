@@ -1,40 +1,40 @@
 package ie.cit.teambravo.cardsec.dto;
 
 public class ValidationDto {
-    private String reason;
-    private boolean validEvent;
-    private Event currentEvent;
-    private Event previousEvent;
+	private String reason;
+	private boolean validEvent;
+	private Event currentEvent;
+	private Event previousEvent;
 
-    public String getReason() {
-        return reason;
-    }
+	public String getReason() {
+		return reason;
+	}
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 
-    public boolean isValidEvent() {
-        return validEvent;
-    }
+	public boolean isValidEvent() {
+		return validEvent;
+	}
 
-    public void setValidEvent(boolean validEvent) {
-        this.validEvent = validEvent;
-    }
+	public void setValidEvent(boolean validEvent) {
+		this.validEvent = validEvent;
+	}
 
-    public Event getCurrentEvent() {
-        return currentEvent;
-    }
+	public Event getCurrentEvent() {
+		return currentEvent;
+	}
 
-    public void setCurrentEvent(Event currentEvent) {
-        this.currentEvent = currentEvent;
-    }
+	public void setCurrentEvent(Event currentEvent) {
+		this.currentEvent = currentEvent;
+	}
 
-    public Event getPreviousEvent() {
-        return previousEvent;
-    }
+	public Event getPreviousEvent() {
+		return previousEvent;
+	}
 
-    public void setPreviousEvent(Event previousEvent) {
-        this.previousEvent = previousEvent;
-    }
+	public void setPreviousEvent(Event previousEvent) {
+		this.previousEvent = previousEvent;
+	}
 }

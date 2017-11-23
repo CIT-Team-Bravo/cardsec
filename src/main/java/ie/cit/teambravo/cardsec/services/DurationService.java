@@ -5,8 +5,8 @@ import ie.cit.teambravo.cardsec.model.LatLngAlt;
 public interface DurationService {
 
 	/**
-	 * Get the estimated minimum travel time in seconds between two given points. Note that
-	 * this get's more lenient as travel times decrease.
+	 * Get the estimated minimum travel time in seconds between two given points. Note that this get's more lenient as
+	 * travel times decrease.
 	 * 
 	 * @param start
 	 *            the start position

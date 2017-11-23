@@ -8,12 +8,12 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PanelLocatorServiceImpl implements PanelLocatorService {
 
-    @Value("${panel.locator.endpoint}")
-    private String PANEL_LOCATION_ENDPOINT;
+	@Value("${panel.locator.endpoint}")
+	private String PANEL_LOCATION_ENDPOINT;
 
-    @Override
-    public Location getPanelLocation(String panelId) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(PANEL_LOCATION_ENDPOINT + "/" + panelId, Location.class);
-    }
+	@Override
+	public Location getPanelLocation(String panelId) {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForObject(PANEL_LOCATION_ENDPOINT + "/" + panelId, Location.class);
+	}
 }

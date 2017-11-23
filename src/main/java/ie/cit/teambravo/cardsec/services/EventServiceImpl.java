@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+	@Autowired
+	private EventRepository eventRepository;
 
-    @Override
-    public Event saveEvent(Event eventDto) {
-        return eventRepository.save(eventDto);
-    }
+	@Override
+	public Event saveEvent(Event eventDto) {
+		return eventRepository.save(eventDto);
+	}
 }

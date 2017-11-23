@@ -10,34 +10,34 @@ import javax.persistence.Id;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Coordinates {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
-    private Double longitude;
-    private Double latitude;
+	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	private String id;
+	private Double longitude;
+	private Double latitude;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Double getLongitude() {
-        return longitude;
-    }
+	public Double getLongitude() {
+		return longitude;
+	}
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 
-    public Double getLatitude() {
-        return latitude;
-    }
+	public Double getLatitude() {
+		return latitude;
+	}
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
 }
