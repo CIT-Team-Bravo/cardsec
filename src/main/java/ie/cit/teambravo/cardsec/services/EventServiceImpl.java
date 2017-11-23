@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+	@Autowired
+	private EventRepository eventRepository;
 
     @Override
     public Event saveEvent(Event eventDto) {

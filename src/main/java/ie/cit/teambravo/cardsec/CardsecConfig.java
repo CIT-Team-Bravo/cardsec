@@ -28,6 +28,8 @@ public class CardsecConfig {
 	private String host;
 	@Value("${mqtt.server.port}")
 	private String port;
+	@Value("${mqtt.topic}")
+	private String topic;
 
 	@Bean
 	public MqttPahoClientFactory mqttClientFactory() {
@@ -41,7 +43,7 @@ public class CardsecConfig {
 	public MessageHandler mqttOutbound() {
 		MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("testClient", mqttClientFactory());
 		messageHandler.setAsync(true);
-		messageHandler.setDefaultTopic("testTopic");
+		messageHandler.setDefaultTopic(topic);
 		return messageHandler;
 	}
 

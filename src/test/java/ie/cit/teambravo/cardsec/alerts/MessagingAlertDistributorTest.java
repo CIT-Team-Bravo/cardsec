@@ -1,25 +1,29 @@
 package ie.cit.teambravo.cardsec.alerts;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
-import ie.cit.teambravo.cardsec.dto.Coordinates;
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.dto.Location;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.io.File;
+import java.util.UUID;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.io.File;
-import java.util.UUID;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.main.JsonSchema;
+import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import ie.cit.teambravo.cardsec.dto.Coordinates;
+import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.dto.Location;
 
 public class MessagingAlertDistributorTest {
 
@@ -31,9 +35,10 @@ public class MessagingAlertDistributorTest {
 	@Before
 	public void setup() throws ProcessingException {
 		mockEventGateway = Mockito.mock(MessageGateway.class);
-		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
 		schema = JsonSchemaFactory.byDefault().getJsonSchema("resource:/messageSchema.json");
 		mapper = new ObjectMapper();
+		messagingAlertDistributor = new MessagingAlertDistributor(mockEventGateway);
+
 	}
 
 	@Test
@@ -53,6 +58,23 @@ public class MessagingAlertDistributorTest {
 
 		ProcessingReport result = schema.validate(mapper.readTree(jsonPayload), true);
 		assertTrue(result.toString(), result.isSuccess());
+	}
+
+	@Test
+	public void generateAlert_when_calledWithBadArguments_then_throwsException() {
+		// Arrange
+		Event currentEvent = generateTestEvent();
+
+		// Act
+		try {
+			messagingAlertDistributor.generateAlert(currentEvent, null);
+			fail("Expected an exception here, because the previousEvent was null");
+		} catch (Exception e) {
+			// Assert
+			assertEquals("Error publishing alert message", e.getMessage());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+		}
+
 	}
 
 	@Test

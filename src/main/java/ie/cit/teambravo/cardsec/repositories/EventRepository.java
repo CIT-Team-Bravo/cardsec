@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EventRepository extends CrudRepository<Event, String> {
 
-    List<Event> findByCardId(String cardId);
+	List<Event> findByCardId(String cardId);
 
     Event findFirstByCardIdOrderByTimestampDesc(String cardId);
 
