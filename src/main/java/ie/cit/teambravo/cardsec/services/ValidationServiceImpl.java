@@ -33,8 +33,6 @@ public class ValidationServiceImpl implements ValidationService {
         eventDto.setAccessAllowed(allowed);
         eventDto.setTimestamp(System.currentTimeMillis());
         eventDto.setLocation(panelLocatorService.getPanelLocation(panelId));
-        durationService.getTravelTimeBetween2Points(new LatLngAlt(36.12, -86.67, 10.0),
-                new LatLngAlt(33.94, -118.40, 10.0));
         eventService.saveEvent(eventDto);
 
         Event previousEvent = eventService.findLatestEventByCard(cardId);

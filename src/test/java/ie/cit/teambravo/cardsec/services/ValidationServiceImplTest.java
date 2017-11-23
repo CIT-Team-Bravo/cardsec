@@ -1,6 +1,5 @@
 package ie.cit.teambravo.cardsec.services;
 
-import com.google.maps.model.DistanceMatrixRow;
 import ie.cit.teambravo.cardsec.dto.Coordinates;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.dto.Location;
@@ -51,7 +50,7 @@ public class ValidationServiceImplTest {
 
         when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
         when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
-        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
+        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
 
         mockDistanceToUclFrom(-8.4980692, 51.8960528); //cork city, fitzgerald's park
 
@@ -61,7 +60,7 @@ public class ValidationServiceImplTest {
         // Assert & Verify
         assertThat(result, Matchers.is(true));
         verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
-        verify(durationServiceMock).getTravelTimeBetween2Points(new LatLngAlt(0,0,0), new LatLngAlt(0,0,0));
+        verify(durationServiceMock).getTravelTimeBetween2Points(any(LatLngAlt.class), any(LatLngAlt.class));
     }
 
     @Test
@@ -76,7 +75,7 @@ public class ValidationServiceImplTest {
         Event eventDto2 = getEvent("panelId", "cardId", true, 0.0D, 0.0D);
         when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
         when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
-        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationDtoWithCoordinates(-0.131913, 51.524774));
+        when(panelLocatorServiceMock.getPanelLocation(panelId)).thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
 
         mockDistanceToUclFrom(52.237049, 21.017532); // Warsaw, Poland
 
@@ -89,9 +88,7 @@ public class ValidationServiceImplTest {
 	}
 
     private void mockDistanceToUclFrom(Double startLat, Double startLong) {
-        DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
-        DistanceMatrixRow[] distanceMatrixRows = new DistanceMatrixRow[]{distanceMatrixRow};
-        when(durationServiceMock.getTravelTimeBetween2Points(new LatLngAlt(0,0,0), new LatLngAlt(0,0,0))).thenReturn(10L);
+        when(durationServiceMock.getTravelTimeBetween2Points(any(LatLngAlt.class), any(LatLngAlt.class))).thenReturn(10L);
     }
 
     private Event getEvent(String panelId, String cardId, boolean accessAllowed, Double latitude, Double longitude) {
@@ -100,16 +97,17 @@ public class ValidationServiceImplTest {
         eventDto.setCardId(cardId);
         eventDto.setAccessAllowed(accessAllowed);
         eventDto.setTimestamp(10);
-        eventDto.setLocation(getLocationDtoWithCoordinates(latitude, longitude));
+        eventDto.setLocation(getLocationWithCoordinates(latitude, longitude));
         return eventDto;
     }
 
-    private Location getLocationDtoWithCoordinates(Double latitude, Double longitude) {
-        Location locationDto = new Location();
+    private Location getLocationWithCoordinates(Double latitude, Double longitude) {
+        Location location = new Location();
         Coordinates coordinatesDto = new Coordinates();
         coordinatesDto.setLatitude(latitude);
         coordinatesDto.setLongitude(longitude);
-        locationDto.setCoordinates(coordinatesDto);
-        return locationDto;
+        location.setAltitude(0);
+        location.setCoordinates(coordinatesDto);
+        return location;
     }
 }

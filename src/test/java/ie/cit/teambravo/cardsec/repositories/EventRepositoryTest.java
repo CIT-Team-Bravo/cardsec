@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -73,6 +74,7 @@ public class EventRepositoryTest {
         eventRepository.save(event1);
 
         Event event2 = getEvent("panel-id2");
+
         eventRepository.save(event2);
 
         // Act
@@ -105,7 +107,7 @@ public class EventRepositoryTest {
         event.setPanelId(panelId);
         event.setCardId("card-001");
         event.setAccessAllowed(true);
-        event.setTimestamp(1L);
+        event.setTimestamp(new Date().getTime());
         return event;
     }
 
