@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.model.LatLngAlt;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -16,11 +14,6 @@ public class ValidationServiceImpl implements ValidationService {
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
 	private DurationService durationService;
-    private EventService eventService;
-
-    private PanelLocatorService panelLocatorService;
-
-    private DurationService durationService;
 
 	@Autowired
 	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
@@ -47,17 +40,18 @@ public class ValidationServiceImpl implements ValidationService {
 
 		eventService.saveEvent(event);
 
-        Event previousEvent = eventService.findLatestEventByCard(cardId);
-        Double prevLat = previousEvent.getLocation().getCoordinates().getLatitude();
-        Double prevLong = previousEvent.getLocation().getCoordinates().getLongitude();
-        LatLngAlt prevDetails = new LatLngAlt(prevLat, prevLong, previousEvent.getLocation().getAltitude());
-        LatLngAlt currentDetails = new LatLngAlt(event.getLocation().getCoordinates().getLatitude(), eventDto.getLocation().getCoordinates().getLongitude(), eventDto.getLocation().getAltitude());
+		Event previousEvent = eventService.findLatestEventByCard(cardId);
+		Double prevLat = previousEvent.getLocation().getCoordinates().getLatitude();
+		Double prevLong = previousEvent.getLocation().getCoordinates().getLongitude();
+		LatLngAlt prevDetails = new LatLngAlt(prevLat, prevLong, previousEvent.getLocation().getAltitude());
+		LatLngAlt currentDetails = new LatLngAlt(event.getLocation().getCoordinates().getLatitude(),
+				event.getLocation().getCoordinates().getLongitude(), event.getLocation().getAltitude());
 
-        Long distanceBetween2Points = durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
+		Long distanceBetween2Points = durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
 
-        if (Boolean.TRUE.equals(allowed)) {
-            return true;
-        }
+		if (Boolean.TRUE.equals(allowed)) {
+			return true;
+		}
 
 		alertService.generateAlert(event, event);
 
