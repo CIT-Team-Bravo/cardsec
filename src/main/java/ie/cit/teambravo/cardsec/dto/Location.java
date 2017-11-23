@@ -1,14 +1,13 @@
 package ie.cit.teambravo.cardsec.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -21,7 +20,7 @@ public class Location {
 			CascadeType.ALL
 	})
 	private Coordinates coordinates;
-	private int altitude;
+	private double altitude;
 	private String relativeLocation;
 
 	public String getId() {
@@ -40,11 +39,11 @@ public class Location {
 		this.coordinates = coordinates;
 	}
 
-	public int getAltitude() {
+	public double getAltitude() {
 		return altitude;
 	}
 
-	public void setAltitude(int altitude) {
+	public void setAltitude(double altitude) {
 		this.altitude = altitude;
 	}
 
