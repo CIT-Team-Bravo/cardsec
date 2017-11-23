@@ -52,14 +52,14 @@ public class ValidationServiceImpl implements ValidationService {
 		LatLngAlt currentDetails = new LatLngAlt(event.getLocation().getCoordinates().getLatitude(),
 				event.getLocation().getCoordinates().getLongitude(), event.getLocation().getAltitude());
 
-		Long distanceBetween2Points = durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
+		durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
 
 		if (Boolean.TRUE.equals(allowed)) {
-			return null;
+			return new ValidationResponse(event, previousEvent, Boolean.TRUE);
 		}
 
-		alertService.generateAlert(event, event);
+		alertService.generateAlert(event, previousEvent);
 
-		return null;
+		return new ValidationResponse(event, previousEvent, Boolean.FALSE);
 	}
 }
