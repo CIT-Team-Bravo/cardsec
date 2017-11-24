@@ -40,9 +40,10 @@ public class ValidationServiceImpl implements ValidationService {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Unknown panelId " + panelId, e);
 		}
-		eventService.saveEvent(event);
 
 		Event previousEvent = eventService.findLatestEventByCard(cardId);
+
+		eventService.saveEvent(event);
 
 		if (previousEvent == null) {
 			return new ValidationResponse(event, null, Boolean.TRUE);
