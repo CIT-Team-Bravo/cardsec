@@ -23,6 +23,7 @@ public class TestUtil {
 		coordinates.setLongitude(1.10);
 
 		location.setCoordinates(coordinates);
+		location.setAltitude(100);
 
 		anEventWhereTheDataIsNotImportant.setLocation(location);
 

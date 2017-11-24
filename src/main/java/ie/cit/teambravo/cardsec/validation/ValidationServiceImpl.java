@@ -1,7 +1,5 @@
 package ie.cit.teambravo.cardsec.validation;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,6 @@ public class ValidationServiceImpl implements ValidationService {
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
 	private DurationService durationService;
-	private Random random = new Random();
 
 	@Autowired
 	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
@@ -31,35 +28,41 @@ public class ValidationServiceImpl implements ValidationService {
 	}
 
 	@Override
-	public ValidationResponse validate(String panelId, String cardId) {
+	public ValidationResponse validate(String panelId, String cardId, Boolean allowed) {
 
-		Boolean allowed = random.nextBoolean();
-
-		// Placeholder for adding events to database
 		Event event = new Event();
 		event.setPanelId(panelId);
 		event.setCardId(cardId);
 		event.setAccessAllowed(allowed);
 		event.setTimestamp(System.currentTimeMillis());
-		event.setLocation(panelLocatorService.getPanelLocation(panelId));
-
+		try {
+			event.setLocation(panelLocatorService.getPanelLocation(panelId));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Unknown panelId " + panelId, e);
+		}
 		eventService.saveEvent(event);
 
 		Event previousEvent = eventService.findLatestEventByCard(cardId);
-		Double prevLat = previousEvent.getLocation().getCoordinates().getLatitude();
-		Double prevLong = previousEvent.getLocation().getCoordinates().getLongitude();
-		LatLngAlt prevDetails = new LatLngAlt(prevLat, prevLong, previousEvent.getLocation().getAltitude());
-		LatLngAlt currentDetails = new LatLngAlt(event.getLocation().getCoordinates().getLatitude(),
-				event.getLocation().getCoordinates().getLongitude(), event.getLocation().getAltitude());
 
-		durationService.getTravelTimeBetween2Points(prevDetails, currentDetails);
-
-		if (Boolean.TRUE.equals(allowed)) {
-			return new ValidationResponse(event, previousEvent, Boolean.TRUE);
+		if (previousEvent == null) {
+			return new ValidationResponse(event, null, Boolean.TRUE);
 		}
 
-		alertService.generateAlert(event, previousEvent);
-
-		return new ValidationResponse(event, previousEvent, Boolean.FALSE);
+		long timeBetweenEvents = event.getTimestamp() - previousEvent.getTimestamp();
+		long minimumJourneyDuration = durationService.getTravelTimeBetween2Points(getLatLngAlt(event),
+				getLatLngAlt(previousEvent));
+		if (minimumJourneyDuration < timeBetweenEvents) {
+			return new ValidationResponse(event, previousEvent, Boolean.TRUE);
+		} else {
+			alertService.generateAlert(event, previousEvent);
+			return new ValidationResponse(event, previousEvent, Boolean.FALSE);
+		}
 	}
+
+	private LatLngAlt getLatLngAlt(Event event) {
+		return new LatLngAlt(event.getLocation().getCoordinates().getLatitude(),
+				event.getLocation().getCoordinates().getLongitude(), event.getLocation().getAltitude());
+
+	}
+
 }
