@@ -1,5 +1,7 @@
 package ie.cit.teambravo.cardsec.validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import ie.cit.teambravo.cardsec.services.PanelLocatorService;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	private EventService eventService;
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
@@ -46,12 +49,24 @@ public class ValidationServiceImpl implements ValidationService {
 		eventService.saveEvent(event);
 
 		if (previousEvent == null) {
+			LOGGER.info("Swipe on {} at {}, no previous swipe. Request is OK");
+
 			return new ValidationResponse(event, null, Boolean.TRUE);
 		}
 
 		long timeBetweenEvents = event.getTimestamp() - previousEvent.getTimestamp();
 		long minimumJourneyDuration = durationService.getTravelTimeBetween2Points(getLatLngAlt(event),
 				getLatLngAlt(previousEvent));
+
+		boolean validationResult = minimumJourneyDuration < timeBetweenEvents;
+
+		LOGGER.info(
+				"Card {} swiped on panel {} ({}) at {} , previous swipe on {} ({}) at {}. Time between swipes {}. Minimum journey time {}. Request is {}",
+				cardId, panelId, event.getLocation().getRelativeLocation(), event.getTimestamp(),
+				previousEvent.getPanelId(), previousEvent.getLocation().getRelativeLocation(),
+				previousEvent.getTimestamp(), timeBetweenEvents, minimumJourneyDuration,
+				validationResult ? "OK" : "ALERT");
+
 		if (minimumJourneyDuration < timeBetweenEvents) {
 			return new ValidationResponse(event, previousEvent, Boolean.TRUE);
 		} else {
