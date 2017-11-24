@@ -3,6 +3,7 @@ package ie.cit.teambravo.cardsec.validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,11 @@ public class ValidationController {
 	@ResponseBody
 	public ValidationResponse validationRequest(@RequestParam String panelId, @RequestParam String cardId,
 			@RequestParam Boolean allowed) {
-		return validationService.validate(panelId, cardId);
+		return validationService.validate(panelId, cardId, allowed);
+	}
+
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "This panelId is unknown")
+	@ExceptionHandler(IllegalArgumentException.class)
+	public void exceptionHandler() {
 	}
 }

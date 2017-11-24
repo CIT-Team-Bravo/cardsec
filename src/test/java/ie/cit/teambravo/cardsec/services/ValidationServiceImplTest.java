@@ -1,6 +1,11 @@
 package ie.cit.teambravo.cardsec.services;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -9,6 +14,7 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -16,7 +22,7 @@ import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Coordinates;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.dto.Location;
-import ie.cit.teambravo.cardsec.model.LatLngAlt;
+import ie.cit.teambravo.cardsec.test.TestUtil;
 import ie.cit.teambravo.cardsec.validation.ValidationResponse;
 import ie.cit.teambravo.cardsec.validation.ValidationServiceImpl;
 
@@ -40,68 +46,174 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void validate_when_requestIsValid_then_respondWithTrue() {
+	public void validate_when_noPreviousEvent_then_respondWithTrue() {
 		// Arrange
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
-		Event eventToBeSaved = getEvent(panelId, cardId, true, -0.131913, 51.524774);
-		eventToBeSaved.setPanelId(panelId);
-		eventToBeSaved.setCardId(cardId);
-		Event eventDto2 = getEvent(panelId, cardId, true, -8.4980692, 51.8960528);
-
-		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(eventDto2);
-		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
-		when(panelLocatorServiceMock.getPanelLocation(panelId))
-				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-
-		mockDistanceToUclFrom(-8.4980692, 51.8960528); // cork city, fitzgerald's park
 
 		// Act
-		ValidationResponse result = validationServiceImpl.validate(panelId, cardId);
+		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
 
-		// Assert & Verify
-		// assertThat(result.getValidEvent(), Matchers.is(true));
-		verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
-		verify(durationServiceMock).getTravelTimeBetween2Points(any(LatLngAlt.class), any(LatLngAlt.class));
+		// Assert
+		assertThat(response.getValidEvent(), is(true));
 	}
 
 	@Test
-	public void validate_when_requestIsNotValid_then_respondWithFalse() {
+	public void validate_when_called_then_currentEventIsStored() {
 		// Arrange
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
-		Event eventToBeSaved = new Event();
-		eventToBeSaved.setPanelId(panelId);
-		eventToBeSaved.setCardId(cardId);
-		Event event = getEvent("panelId", "cardId", true, 0.0D, 0.0D);
-		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(event);
-		when(eventServiceMock.saveEvent(eventToBeSaved)).thenReturn(new Event());
-		when(panelLocatorServiceMock.getPanelLocation(panelId))
-				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-
-		mockDistanceToUclFrom(52.237049, 21.017532); // Warsaw, Poland
 
 		// Act
-		ValidationResponse result = validationServiceImpl.validate(panelId, cardId);
+		validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
 
-		// Assert & Verify
-		// assertThat(result.getValidEvent(), Matchers.is(false));
-		verify(eventServiceMock).saveEvent(any(eventToBeSaved.getClass()));
+		// Assert
+		ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
+
+		verify(eventServiceMock, times(1)).saveEvent(captor.capture());
+		Event savedEvent = captor.getValue();
+
+		assertThat(savedEvent.getCardId(), is(cardId));
+		assertThat(savedEvent.getPanelId(), is(panelId));
+		assertThat(savedEvent.getAccessAllowed(), is(Boolean.TRUE));
 	}
 
-	private void mockDistanceToUclFrom(Double startLat, Double startLong) {
-		when(durationServiceMock.getTravelTimeBetween2Points(any(LatLngAlt.class), any(LatLngAlt.class)))
-				.thenReturn(10L);
+	@Test
+	public void validate_when_travelTimeIsLessThanTimeBetweenEvents_then_respondWithTrue() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(previousEvent.getTimestamp() - 500000);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		assertThat(response.getValidEvent(), is(true));
 	}
 
-	private Event getEvent(String panelId, String cardId, boolean accessAllowed, Double latitude, Double longitude) {
-		Event eventDto = new Event();
-		eventDto.setPanelId(panelId);
-		eventDto.setCardId(cardId);
-		eventDto.setAccessAllowed(accessAllowed);
-		eventDto.setTimestamp(10);
-		eventDto.setLocation(getLocationWithCoordinates(latitude, longitude));
-		return eventDto;
+	@Test
+	public void validate_when_travelTimeIsLessThanTimeBetweenEvents_then_alertIsNotCalled() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(previousEvent.getTimestamp() - 500000);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		verify(alertServiceMock, never()).generateAlert(any(), any());
+	}
+
+	@Test
+	public void validate_when_travelTimeIsGreaterThanTimeBetweenEvents_then_respondWithFalse() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		assertThat(response.getValidEvent(), is(false));
+	}
+
+	@Test
+	public void validate_when_travelTimeIsGreaterThanTimeBetweenEvents_then_alertIsGenerated() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		verify(alertServiceMock, times(1)).generateAlert(any(), any());
+	}
+
+	@Test
+	public void validate_when_travelTimeIsGreaterThanTimeBetweenEvents_then_responseValidEventIsFALSE() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		assertThat(response.getValidEvent(), is(Boolean.FALSE));
+	}
+
+	@Test
+	public void validate_when_eventIsAllowedButTravelIsNotPossible_then_respondWithFalse() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		Event previousEvent = TestUtil.generateTestEvent();
+		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+
+		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
+		when(panelLocatorServiceMock.getPanelLocation(panelId))
+				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+
+		// Act
+		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+
+		// Assert
+		assertThat(response.getValidEvent(), is(false));
+	}
+
+	@Test
+	public void validate_when_panelIdIsInvalid_then_exception_isThrown() {
+		// Arrange
+		String panelId = UUID.randomUUID().toString();
+		String cardId = UUID.randomUUID().toString();
+		when(panelLocatorServiceMock.getPanelLocation(panelId)).thenThrow(new RuntimeException("Test exception"));
+
+		// Act / Assert
+		try {
+			validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
+			fail("Expecting IllegalArgumentException here");
+		} catch (Exception e) {
+			assert (e instanceof IllegalArgumentException);
+			assertThat(e.getCause().getMessage(), is("Test exception"));
+		}
+
 	}
 
 	private Location getLocationWithCoordinates(Double latitude, Double longitude) {
@@ -111,6 +223,7 @@ public class ValidationServiceImplTest {
 		coordinatesDto.setLongitude(longitude);
 		location.setAltitude(0);
 		location.setCoordinates(coordinatesDto);
+
 		return location;
 	}
 }

@@ -1,6 +1,5 @@
 package ie.cit.teambravo.cardsec;
 
-import com.google.maps.GeoApiContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +11,9 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+
+import com.google.maps.GeoApiContext;
+
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;

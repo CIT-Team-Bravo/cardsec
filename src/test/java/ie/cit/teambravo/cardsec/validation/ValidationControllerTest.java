@@ -39,7 +39,7 @@ public class ValidationControllerTest {
 
 		ValidationResponse serviceResponse = new ValidationResponse(currentEvent, previousEvent, true);
 
-		Mockito.when(validationServiceMock.validate(currentEvent.getPanelId(), currentEvent.getCardId()))
+		Mockito.when(validationServiceMock.validate(currentEvent.getPanelId(), currentEvent.getCardId(), Boolean.TRUE))
 				.thenReturn(serviceResponse);
 
 		ValidationResponse response = validationController.validationRequest(currentEvent.getPanelId(),
