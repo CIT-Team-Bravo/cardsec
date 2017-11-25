@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.validation;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,9 +22,10 @@ import ie.cit.teambravo.cardsec.alerts.AlertService;
 import ie.cit.teambravo.cardsec.dto.Coordinates;
 import ie.cit.teambravo.cardsec.dto.Event;
 import ie.cit.teambravo.cardsec.dto.Location;
+import ie.cit.teambravo.cardsec.services.DurationService;
+import ie.cit.teambravo.cardsec.services.EventService;
+import ie.cit.teambravo.cardsec.services.PanelLocatorService;
 import ie.cit.teambravo.cardsec.test.TestUtil;
-import ie.cit.teambravo.cardsec.validation.ValidationResponse;
-import ie.cit.teambravo.cardsec.validation.ValidationServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
@@ -96,6 +97,7 @@ public class ValidationServiceImplTest {
 
 		// Assert
 		assertThat(response.getValidEvent(), is(true));
+		assertThat(response.getReason(), is("Possible time-distance event."));
 	}
 
 	@Test
@@ -136,6 +138,7 @@ public class ValidationServiceImplTest {
 
 		// Assert
 		assertThat(response.getValidEvent(), is(false));
+		assertThat(response.getReason(), is("Impossible time-distance event."));
 	}
 
 	@Test

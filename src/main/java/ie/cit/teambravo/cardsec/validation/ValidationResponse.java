@@ -3,7 +3,7 @@ package ie.cit.teambravo.cardsec.validation;
 import ie.cit.teambravo.cardsec.dto.Event;
 
 public class ValidationResponse {
-	private final String reason = "Impossible time-distance event.";
+	private final String reason;
 
 	private Event currentEvent;
 	private Event previousEvent;
@@ -14,6 +14,7 @@ public class ValidationResponse {
 		this.currentEvent = currentEvent;
 		this.previousEvent = previousEvent;
 		this.validEvent = validEvent;
+		this.reason = validEvent ? "Possible time-distance event." : "Impossible time-distance event.";
 	}
 
 	public String getReason() {
