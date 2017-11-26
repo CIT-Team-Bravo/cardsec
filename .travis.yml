@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 after_success:
 - "./gradlew build jacocoTestReport coveralls"
-- "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.branch=$TRAVIS_BRANCH"
+- "./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN -Dsonar.branch.name=$TRAVIS_BRANCH"
 deploy:
   provider: cloudfoundry
   api: https://api.run.pivotal.io
