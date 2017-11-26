@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class CardsecConfig {
 
 	@Value("${google.api.distance.key}")
-	private String API_KEY;
+	private String apiKey;
 	@Value("${mqtt.server.host}")
 	private String host;
 	@Value("${mqtt.server.port}")
@@ -62,6 +62,6 @@ public class CardsecConfig {
 
 	@Bean
 	public GeoApiContext geoApiContext(ApplicationContext ctx) {
-		return new GeoApiContext.Builder().apiKey(API_KEY).build();
+		return new GeoApiContext.Builder().apiKey(apiKey).build();
 	}
 }
