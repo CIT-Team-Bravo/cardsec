@@ -82,7 +82,6 @@ sonarqube {
         property "sonar.projectName", "cardsec"
         property "sonar.host.url", "https://sonarqube.com"
         property "sonar.organization", "cardsec"
-        property "sonar.login", "9ade3f0ef4df0bd80377f53e1454d5a8ce607e7d"
         property "sonar.github.repository", "CIT-Team-Bravo/cardsec"
     }
 }
