@@ -10,11 +10,11 @@ import ie.cit.teambravo.cardsec.dto.Location;
 public class PanelLocatorServiceImpl implements PanelLocatorService {
 
 	@Value("${panel.locator.endpoint}")
-	private String PANEL_LOCATION_ENDPOINT;
+	private String panelLocationEndpoint;
 
 	@Override
 	public Location getPanelLocation(String panelId) {
 		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.getForObject(PANEL_LOCATION_ENDPOINT + "/" + panelId, Location.class);
+		return restTemplate.getForObject(panelLocationEndpoint + "/" + panelId, Location.class);
 	}
 }

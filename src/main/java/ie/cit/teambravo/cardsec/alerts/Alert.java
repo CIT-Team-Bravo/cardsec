@@ -3,9 +3,9 @@ package ie.cit.teambravo.cardsec.alerts;
 import ie.cit.teambravo.cardsec.dto.Event;
 
 public class Alert {
-	private final String severity = "High";
-	private final String title = "Possible Cloned Access Card";
-	private final String description = "An access-card has been used that was very recently used in another location, indicating that it is unlikely to be the same card-holder";
+	private static final String severity = "High";
+	private static final String title = "Possible Cloned Access Card";
+	private static final String description = "An access-card has been used that was very recently used in another location, indicating that it is unlikely to be the same card-holder";
 
 	private Event currentEvent;
 	private Event previousEvent;
