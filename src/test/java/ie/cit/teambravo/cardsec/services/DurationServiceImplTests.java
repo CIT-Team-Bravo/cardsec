@@ -41,8 +41,8 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 })
 public class DurationServiceImplTests {
 
-	public static final int FEET_PER_FLOOR = 10;
-	public static final int SECONDS_PER_FLOOR = 8;
+	private static final int FEET_PER_FLOOR = 10;
+	private static final int SECONDS_PER_FLOOR = 8;
 	@Mock
 	private GeoApiContext geoApiContext;
 
