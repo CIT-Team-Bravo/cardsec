@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.model;
+package ie.cit.teambravo.cardsec.location;
 
 import java.util.Objects;
 

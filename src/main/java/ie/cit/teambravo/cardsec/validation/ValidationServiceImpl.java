@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ie.cit.teambravo.cardsec.alerts.AlertService;
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.model.LatLngAlt;
-import ie.cit.teambravo.cardsec.services.DurationService;
-import ie.cit.teambravo.cardsec.services.EventService;
-import ie.cit.teambravo.cardsec.services.PanelLocatorService;
+import ie.cit.teambravo.cardsec.duration.DurationService;
+import ie.cit.teambravo.cardsec.events.Event;
+import ie.cit.teambravo.cardsec.events.EventService;
+import ie.cit.teambravo.cardsec.location.LatLngAlt;
+import ie.cit.teambravo.cardsec.location.PanelLocatorService;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {

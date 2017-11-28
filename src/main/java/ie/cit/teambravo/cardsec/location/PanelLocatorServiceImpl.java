@@ -1,10 +1,8 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.location;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import ie.cit.teambravo.cardsec.dto.Location;
 
 @Service
 public class PanelLocatorServiceImpl implements PanelLocatorService {

@@ -1,6 +1,8 @@
-package ie.cit.teambravo.cardsec.dto;
+package ie.cit.teambravo.cardsec.events;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import ie.cit.teambravo.cardsec.location.Location;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

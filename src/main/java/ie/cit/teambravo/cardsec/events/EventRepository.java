@@ -1,6 +1,5 @@
-package ie.cit.teambravo.cardsec.repositories;
+package ie.cit.teambravo.cardsec.events;
 
-import ie.cit.teambravo.cardsec.dto.Event;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

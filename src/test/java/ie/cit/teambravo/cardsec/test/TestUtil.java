@@ -2,9 +2,9 @@ package ie.cit.teambravo.cardsec.test;
 
 import java.util.UUID;
 
-import ie.cit.teambravo.cardsec.dto.Coordinates;
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.dto.Location;
+import ie.cit.teambravo.cardsec.events.Event;
+import ie.cit.teambravo.cardsec.location.Coordinates;
+import ie.cit.teambravo.cardsec.location.Location;
 
 public class TestUtil {
 	public static Event generateTestEvent() {

@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.dto;
+package ie.cit.teambravo.cardsec.location;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

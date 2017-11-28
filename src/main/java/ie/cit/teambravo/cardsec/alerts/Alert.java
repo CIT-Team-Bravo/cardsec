@@ -1,6 +1,6 @@
 package ie.cit.teambravo.cardsec.alerts;
 
-import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.events.Event;
 
 public class Alert {
 	private static final String SEVERITY = "High";

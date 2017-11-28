@@ -19,12 +19,12 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ie.cit.teambravo.cardsec.alerts.AlertService;
-import ie.cit.teambravo.cardsec.dto.Coordinates;
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.dto.Location;
-import ie.cit.teambravo.cardsec.services.DurationService;
-import ie.cit.teambravo.cardsec.services.EventService;
-import ie.cit.teambravo.cardsec.services.PanelLocatorService;
+import ie.cit.teambravo.cardsec.duration.DurationService;
+import ie.cit.teambravo.cardsec.events.Event;
+import ie.cit.teambravo.cardsec.events.EventService;
+import ie.cit.teambravo.cardsec.location.Coordinates;
+import ie.cit.teambravo.cardsec.location.Location;
+import ie.cit.teambravo.cardsec.location.PanelLocatorService;
 import ie.cit.teambravo.cardsec.test.TestUtil;
 
 @RunWith(MockitoJUnitRunner.class)

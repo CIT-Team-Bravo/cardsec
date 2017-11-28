@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.dto;
+package ie.cit.teambravo.cardsec.location;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
