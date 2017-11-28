@@ -98,7 +98,6 @@ public class DurationServiceImpl implements DurationService {
 						.min(pairs.stream().map(pair -> pair.getFirst().inSeconds).collect(Collectors.toList()));
 			}
 		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
 			throw new RuntimeException("Failed to compute duration", e);
 		}
 	}
