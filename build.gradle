@@ -55,7 +55,10 @@ dependencies {
     compile('com.github.java-json-tools:json-schema-validator:2.2.8')
     compile('com.fasterxml.jackson.core:jackson-core:2.9.2')
     compile('org.yaml:snakeyaml')
-	
+
+    // Other
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+
     // Testing
     testCompile("com.github.stefanbirkner:fishbowl:1.4.1")
     testCompile('org.springframework.boot:spring-boot-starter-test')

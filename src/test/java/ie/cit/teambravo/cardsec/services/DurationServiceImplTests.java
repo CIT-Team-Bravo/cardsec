@@ -41,6 +41,8 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 })
 public class DurationServiceImplTests {
 
+	public static final int FEET_PER_FLOOR = 10;
+	public static final int SECONDS_PER_FLOOR = 8;
 	@Mock
 	private GeoApiContext geoApiContext;
 
@@ -58,8 +60,12 @@ public class DurationServiceImplTests {
 		Duration computedDuration = new Duration();
 		computedDuration.inSeconds = 1000;
 
+		Distance computedDistance = new Distance();
+		computedDistance.inMeters = 1000L;
+
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
+		element.distance = computedDistance;
 
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
@@ -104,9 +110,10 @@ public class DurationServiceImplTests {
 		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
 		long nonDrivingDuration = 1000L;
 		long drivingDuration = 100L;
+		long distance = 100L;
 
-		DistanceMatrix drivingDistanceMatrix = buildDistanceMatrix(drivingDuration);
-		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration);
+		DistanceMatrix drivingDistanceMatrix = buildDistanceMatrix(drivingDuration, distance);
+		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration, distance);
 
 		DistanceMatrixApiRequest drivingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
 				TravelMode.DRIVING, drivingDistanceMatrix);
@@ -137,9 +144,10 @@ public class DurationServiceImplTests {
 		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
 		long nonDrivingDuration = 1000L;
 		long drivingDuration = 100L;
+		long distance = 100L;
 
-		DistanceMatrix drivingDistanceMatrix = buildDistanceMatrix(drivingDuration);
-		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration);
+		DistanceMatrix drivingDistanceMatrix = buildDistanceMatrix(drivingDuration, distance);
+		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration, distance);
 
 		DistanceMatrixApiRequest drivingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
 				TravelMode.DRIVING, drivingDistanceMatrix);
@@ -166,13 +174,51 @@ public class DurationServiceImplTests {
 				exception.getCause().getLocalizedMessage());
 	}
 
-	private DistanceMatrix buildDistanceMatrix(long duration) throws InterruptedException, ApiException, IOException {
+	@Test
+	public void should_calculate_duration_from_altitude_if_distance_is_lss_than_100()
+			throws InterruptedException, ApiException, IOException {
+		// Arrange
+		LatLng start = new LatLng(14, 22);
+		LatLng end = new LatLng(15, 10);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 100);
+		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 90);
+		long nonDrivingDuration = 1000L;
+		long drivingDuration = 100L;
+		long distance = 0L;
+
+		DistanceMatrix drivingDistanceMatrix = buildDistanceMatrix(drivingDuration, distance);
+		DistanceMatrix nonDrivingDistanceMatrix = buildDistanceMatrix(nonDrivingDuration, distance);
+
+		DistanceMatrixApiRequest drivingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
+				TravelMode.DRIVING, drivingDistanceMatrix);
+		DistanceMatrixApiRequest walkingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
+				TravelMode.WALKING, nonDrivingDistanceMatrix);
+		DistanceMatrixApiRequest bikingDistanceRequest = setupApiRequestMock(mock(DistanceMatrixApiRequest.class),
+				TravelMode.BICYCLING, nonDrivingDistanceMatrix);
+
+		mockStatic(DistanceMatrixApi.class);
+		when(DistanceMatrixApi.newRequest(geoApiContext)).thenReturn(drivingDistanceRequest);
+		when(DistanceMatrixApi.newRequest(geoApiContext).mode(TravelMode.WALKING)).thenReturn(walkingDistanceRequest);
+		when(DistanceMatrixApi.newRequest(geoApiContext).mode(TravelMode.BICYCLING)).thenReturn(bikingDistanceRequest);
+
+		// Act
+		Long duration = distanceService.getTravelTimeBetween2Points(start3d, end3d);
+
+		// Assert
+		assertNotNull(duration);
+		long diff = (long) ((start3d.getAltitude() - end3d.getAltitude()) / FEET_PER_FLOOR * SECONDS_PER_FLOOR);
+		assertThat(duration, is(diff));
+	}
+
+	private DistanceMatrix buildDistanceMatrix(long duration, long distance)
+			throws InterruptedException, ApiException, IOException {
 		Duration computedDuration = new Duration();
 		computedDuration.inSeconds = duration;
+		Distance computedDistance = new Distance();
+		computedDistance.inMeters = distance;
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
-		Distance computedDistance = new Distance();
-		computedDistance.inMeters = 100000;
+		element.distance = computedDistance;
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
 				element
