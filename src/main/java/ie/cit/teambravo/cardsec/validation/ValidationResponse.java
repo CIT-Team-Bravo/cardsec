@@ -1,6 +1,6 @@
 package ie.cit.teambravo.cardsec.validation;
 
-import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.events.Event;
 
 public class ValidationResponse {
 	private final String reason;

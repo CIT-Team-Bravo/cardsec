@@ -32,7 +32,8 @@ import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
-import ie.cit.teambravo.cardsec.model.LatLngAlt;
+import ie.cit.teambravo.cardsec.duration.DurationServiceImpl;
+import ie.cit.teambravo.cardsec.location.LatLngAlt;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({

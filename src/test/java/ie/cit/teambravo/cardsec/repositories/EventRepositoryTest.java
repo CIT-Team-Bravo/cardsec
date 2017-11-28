@@ -1,6 +1,8 @@
 package ie.cit.teambravo.cardsec.repositories;
 
-import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.events.Event;
+import ie.cit.teambravo.cardsec.events.EventRepository;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Test;

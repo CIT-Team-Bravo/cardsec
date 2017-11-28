@@ -1,12 +1,9 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.events;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import ie.cit.teambravo.cardsec.dto.Event;
-import ie.cit.teambravo.cardsec.repositories.EventRepository;
 
 @Service
 public class EventServiceImpl implements EventService {

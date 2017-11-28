@@ -1,6 +1,4 @@
-package ie.cit.teambravo.cardsec.services;
-
-import ie.cit.teambravo.cardsec.dto.Event;
+package ie.cit.teambravo.cardsec.events;
 
 import java.util.List;
 

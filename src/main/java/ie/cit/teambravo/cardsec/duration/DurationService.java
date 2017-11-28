@@ -1,6 +1,6 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.duration;
 
-import ie.cit.teambravo.cardsec.model.LatLngAlt;
+import ie.cit.teambravo.cardsec.location.LatLngAlt;
 
 public interface DurationService {
 

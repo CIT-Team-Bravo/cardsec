@@ -1,4 +1,4 @@
-package ie.cit.teambravo.cardsec.services;
+package ie.cit.teambravo.cardsec.duration;
 
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
@@ -6,7 +6,9 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
-import ie.cit.teambravo.cardsec.model.LatLngAlt;
+
+import ie.cit.teambravo.cardsec.location.LatLngAlt;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

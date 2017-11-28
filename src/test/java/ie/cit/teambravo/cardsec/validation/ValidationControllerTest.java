@@ -12,7 +12,7 @@ import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
-import ie.cit.teambravo.cardsec.dto.Event;
+import ie.cit.teambravo.cardsec.events.Event;
 import ie.cit.teambravo.cardsec.test.TestUtil;
 
 public class ValidationControllerTest {
