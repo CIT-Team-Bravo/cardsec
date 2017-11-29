@@ -11,6 +11,8 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.maps.GeoApiContext;
 
@@ -63,5 +65,13 @@ public class CardsecConfig {
 	@Bean
 	public GeoApiContext geoApiContext(ApplicationContext ctx) {
 		return new GeoApiContext.Builder().apiKey(apiKey).build();
+	}
+
+	@Controller
+	class SwaggerRedirect {
+		@RequestMapping("/")
+		public String redirectToUi() {
+			return "redirect:/swagger-ui.html";
+		}
 	}
 }
