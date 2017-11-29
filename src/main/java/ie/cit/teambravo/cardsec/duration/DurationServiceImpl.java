@@ -103,7 +103,7 @@ public class DurationServiceImpl implements DurationService {
 	}
 
 	private long estimateFloors(long altitude) {
-		return altitude / FEET_PER_FLOOR;
+		return altitude < 10 ? 10 : altitude / FEET_PER_FLOOR;
 	}
 
 }
