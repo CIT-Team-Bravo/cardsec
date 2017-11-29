@@ -95,6 +95,7 @@ public class DurationServiceImpl implements DurationService {
 			List<Optional<Pair<Duration, Distance>>> pairs = computedPairs.get();
 			List<Long> actualPairs = pairs.stream().filter(Optional::isPresent)
 					.map(pair -> pair.get().getSecond().inMeters).collect(Collectors.toList());
+
 			if (actualPairs.size() > 0) {
 				long minDistance = Collections.min(actualPairs);
 
@@ -129,7 +130,7 @@ public class DurationServiceImpl implements DurationService {
 		return (long) (EARTH_RADIUS * c);
 	}
 
-	private static double haversin(double val) {
+	private double haversin(double val) {
 		return Math.pow(Math.sin(val / 2), 2);
 	}
 
