@@ -29,6 +29,10 @@ import ie.cit.teambravo.cardsec.test.TestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceImplTest {
+	private static final long TWO_MINUTES_SEC = 2 * 60;
+	private static final long TEN_MINUTES_SEC = 10 * 60;
+	private static final long FIVE_MINUTES_MILLISEC = 5 * 60 * 1000;
+
 	private EventService eventServiceMock;
 	private PanelLocatorService panelLocatorServiceMock;
 	private AlertService alertServiceMock;
@@ -85,12 +89,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(previousEvent.getTimestamp() - 500000);
+		previousEvent.setTimestamp(previousEvent.getTimestamp() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TWO_MINUTES_SEC);
 
 		// Act
 		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
@@ -106,12 +110,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(previousEvent.getTimestamp() - 500000);
+		previousEvent.setTimestamp(previousEvent.getTimestamp() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TWO_MINUTES_SEC);
 
 		// Act
 		validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
@@ -126,12 +130,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+		previousEvent.setTimestamp(System.currentTimeMillis() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TEN_MINUTES_SEC);
 
 		// Act
 		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
@@ -147,12 +151,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+		previousEvent.setTimestamp(System.currentTimeMillis() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TEN_MINUTES_SEC);
 
 		// Act
 		validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
@@ -167,12 +171,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+		previousEvent.setTimestamp(System.currentTimeMillis() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TEN_MINUTES_SEC);
 
 		// Act
 		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
@@ -187,12 +191,12 @@ public class ValidationServiceImplTest {
 		String panelId = UUID.randomUUID().toString();
 		String cardId = UUID.randomUUID().toString();
 		Event previousEvent = TestUtil.generateTestEvent();
-		previousEvent.setTimestamp(System.currentTimeMillis() - 500);
+		previousEvent.setTimestamp(System.currentTimeMillis() - FIVE_MINUTES_MILLISEC);
 
 		when(eventServiceMock.findLatestEventByCard(cardId)).thenReturn(previousEvent);
 		when(panelLocatorServiceMock.getPanelLocation(panelId))
 				.thenReturn(getLocationWithCoordinates(-0.131913, 51.524774));
-		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(2000L);
+		when(durationServiceMock.getTravelTimeBetween2Points(any(), any())).thenReturn(TEN_MINUTES_SEC);
 
 		// Act
 		ValidationResponse response = validationServiceImpl.validate(panelId, cardId, Boolean.TRUE);
