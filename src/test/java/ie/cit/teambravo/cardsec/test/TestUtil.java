@@ -11,7 +11,7 @@ public class TestUtil {
 		Event anEventWhereTheDataIsNotImportant = new Event();
 		anEventWhereTheDataIsNotImportant.setPanelId(UUID.randomUUID().toString());
 		anEventWhereTheDataIsNotImportant.setCardId(UUID.randomUUID().toString());
-		anEventWhereTheDataIsNotImportant.setTimestamp(System.currentTimeMillis() / 1000);
+		anEventWhereTheDataIsNotImportant.setTimestamp(System.currentTimeMillis());
 		anEventWhereTheDataIsNotImportant.setAccessAllowed(false);
 
 		Location location = new Location();

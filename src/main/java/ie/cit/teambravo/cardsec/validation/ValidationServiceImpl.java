@@ -37,7 +37,7 @@ public class ValidationServiceImpl implements ValidationService {
 		event.setPanelId(panelId);
 		event.setCardId(cardId);
 		event.setAccessAllowed(allowed);
-		event.setTimestamp(System.currentTimeMillis() / 1000);
+		event.setTimestamp(System.currentTimeMillis());
 		try {
 			event.setLocation(panelLocatorService.getPanelLocation(panelId));
 		} catch (Exception e) {
@@ -56,7 +56,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 		long timeBetweenEvents = event.getTimestamp() - previousEvent.getTimestamp();
 		long minimumJourneyDuration = durationService.getTravelTimeBetween2Points(getLatLngAlt(event),
-				getLatLngAlt(previousEvent));
+				getLatLngAlt(previousEvent)) * 1000;
 
 		boolean validationResult = minimumJourneyDuration < timeBetweenEvents;
 
