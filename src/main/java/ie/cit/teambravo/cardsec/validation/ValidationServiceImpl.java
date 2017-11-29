@@ -37,7 +37,7 @@ public class ValidationServiceImpl implements ValidationService {
 		event.setPanelId(panelId);
 		event.setCardId(cardId);
 		event.setAccessAllowed(allowed);
-		event.setTimestamp(System.currentTimeMillis());
+		event.setTimestamp(System.currentTimeMillis() / 1000);
 		try {
 			event.setLocation(panelLocatorService.getPanelLocation(panelId));
 		} catch (Exception e) {
