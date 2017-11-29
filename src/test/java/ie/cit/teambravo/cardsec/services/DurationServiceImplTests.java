@@ -27,6 +27,7 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.Distance;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElement;
+import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
@@ -66,7 +67,7 @@ public class DurationServiceImplTests {
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
 		element.distance = computedDistance;
-
+		element.status = DistanceMatrixElementStatus.OK;
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
 				element
@@ -210,6 +211,51 @@ public class DurationServiceImplTests {
 		assertThat(duration, is(diff));
 	}
 
+	@Test
+	public void should_compute_haversine_if_no_reult_from_google()
+			throws InterruptedException, ApiException, IOException {
+		// Arrange
+		LatLng start = new LatLng(42.373916, -71.115494);
+		LatLng end = new LatLng(51.524774, -0.131913);
+		LatLngAlt start3d = new LatLngAlt(start.lat, start.lng, 10);
+		LatLngAlt end3d = new LatLngAlt(end.lat, end.lng, 10);
+
+		DistanceMatrixElement element = new DistanceMatrixElement();
+		element.status = DistanceMatrixElementStatus.ZERO_RESULTS;
+		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
+		distanceMatrixRow.elements = new DistanceMatrixElement[] {
+				element
+		};
+		DistanceMatrixRow[] distanceMatrixRows = new DistanceMatrixRow[] {
+				distanceMatrixRow
+		};
+		String[] startLoc = new String[] {
+				"address start"
+		};
+		String[] endLoc = new String[] {
+				"address end"
+		};
+		DistanceMatrix distanceMatrix = new DistanceMatrix(startLoc, endLoc, distanceMatrixRows);
+
+		DistanceMatrixApiRequest distanceMatrixApiRequest = mock(DistanceMatrixApiRequest.class);
+		mockStatic(DistanceMatrixApi.class);
+		when(distanceMatrixApiRequest.origins(any(LatLng.class))).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.destinations(any(LatLng.class))).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.mode(TravelMode.DRIVING)).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.mode(TravelMode.WALKING)).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.mode(TravelMode.BICYCLING)).thenReturn(distanceMatrixApiRequest);
+		when(distanceMatrixApiRequest.await()).thenReturn(distanceMatrix);
+
+		when(DistanceMatrixApi.newRequest(geoApiContext)).thenReturn(distanceMatrixApiRequest);
+
+		// Act
+		Long duration = distanceService.getTravelTimeBetween2Points(start3d, end3d);
+
+		// Assert
+		assertNotNull(duration);
+		assertThat(duration, is(20490L));
+	}
+
 	private DistanceMatrix buildDistanceMatrix(long duration, long distance)
 			throws InterruptedException, ApiException, IOException {
 		Duration computedDuration = new Duration();
@@ -219,6 +265,8 @@ public class DurationServiceImplTests {
 		DistanceMatrixElement element = new DistanceMatrixElement();
 		element.duration = computedDuration;
 		element.distance = computedDistance;
+		element.status = DistanceMatrixElementStatus.OK;
+
 		DistanceMatrixRow distanceMatrixRow = new DistanceMatrixRow();
 		distanceMatrixRow.elements = new DistanceMatrixElement[] {
 				element
