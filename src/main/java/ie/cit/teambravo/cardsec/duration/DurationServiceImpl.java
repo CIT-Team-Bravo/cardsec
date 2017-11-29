@@ -93,17 +93,18 @@ public class DurationServiceImpl implements DurationService {
 			long altitudeDiff, LatLng start, LatLng end) {
 		try {
 			List<Optional<Pair<Duration, Distance>>> pairs = computedPairs.get();
-			List<Long> actualPairs = pairs.stream().filter(Optional::isPresent)
-					.map(pair -> pair.get().getSecond().inMeters).collect(Collectors.toList());
+			List<Pair<Duration, Distance>> actualPairs = pairs.stream().filter(Optional::isPresent).map(Optional::get)
+					.collect(Collectors.toList());
 
 			if (actualPairs.size() > 0) {
-				long minDistance = Collections.min(actualPairs);
+				long minDistance = Collections
+						.min(actualPairs.stream().map(pair -> pair.getSecond().inMeters).collect(Collectors.toList()));
 
 				if (minDistance < MIN_DISTANCE) {
 					return estimateFloors(altitudeDiff) * SECONDS_PER_FLOOR;
 				} else {
-					return Collections.min(pairs.stream().filter(Optional::isPresent)
-							.map(pair -> pair.get().getFirst().inSeconds).collect(Collectors.toList()));
+					return Collections.min(actualPairs.stream()
+							.map(pair -> pair.getFirst().inSeconds).collect(Collectors.toList()));
 				}
 			} else {
 				return ((computeDistanceHaversine(start, end) * 1000) / ((ESTIMATED_PLANE_SPEED / 60) / 60));
