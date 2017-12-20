@@ -28,7 +28,7 @@ import ie.cit.teambravo.cardsec.location.PanelLocatorService;
 import ie.cit.teambravo.cardsec.test.TestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ValidationServiceImplTest {
+public class ClonedCardCheckerTest {
 	private static final long TWO_MINUTES_SEC = 2 * 60;
 	private static final long TEN_MINUTES_SEC = 10 * 60;
 	private static final long FIVE_MINUTES_MILLISEC = 5 * 60 * 1000;
@@ -37,7 +37,7 @@ public class ValidationServiceImplTest {
 	private PanelLocatorService panelLocatorServiceMock;
 	private AlertService alertServiceMock;
 	private DurationService durationServiceMock;
-	private ValidationServiceImpl validationServiceImpl;
+	private ClonedCardChecker validationServiceImpl;
 
 	@Before
 	public void setup() {
@@ -46,7 +46,7 @@ public class ValidationServiceImplTest {
 		alertServiceMock = Mockito.mock(AlertService.class);
 		durationServiceMock = Mockito.mock(DurationService.class);
 
-		validationServiceImpl = new ValidationServiceImpl(eventServiceMock, panelLocatorServiceMock, alertServiceMock,
+		validationServiceImpl = new ClonedCardChecker(eventServiceMock, panelLocatorServiceMock, alertServiceMock,
 				durationServiceMock);
 	}
 

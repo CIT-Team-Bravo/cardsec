@@ -8,12 +8,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * MQTT client for receiving validation responses
+ */
 public class MessageClient implements MqttCallback {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MessageClient.class);
-
-	// "tcp://test.mosquitto.org"
-	// "validation.alerts"
 	private MqttClient mqttClient;
 
 	public void connect(String broker, String topic) {

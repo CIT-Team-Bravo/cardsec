@@ -2,6 +2,9 @@ package ie.cit.teambravo.cardsec.duration;
 
 import ie.cit.teambravo.cardsec.location.LatLngAlt;
 
+/**
+ * API to the duration package, deals with calculating travel durations
+ */
 public interface DurationService {
 
 	/**

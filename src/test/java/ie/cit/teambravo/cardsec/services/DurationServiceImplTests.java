@@ -33,7 +33,7 @@ import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
-import ie.cit.teambravo.cardsec.duration.DurationServiceImpl;
+import ie.cit.teambravo.cardsec.duration.MultiSourceDurationService;
 import ie.cit.teambravo.cardsec.location.LatLngAlt;
 
 @RunWith(PowerMockRunner.class)
@@ -48,7 +48,7 @@ public class DurationServiceImplTests {
 	private GeoApiContext geoApiContext;
 
 	@InjectMocks
-	private DurationServiceImpl distanceService;
+	private MultiSourceDurationService distanceService;
 
 	@Test
 	public void should_get_travel_duration_between_2_points() throws Exception {
