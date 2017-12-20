@@ -32,11 +32,11 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 @Service
 public class DurationServiceImpl implements DurationService {
 	private static final int EARTH_RADIUS = 6371;
-	private static final long MIN_DISTANCE = 100L;
+	private static final long MIN_DISTANCE_METRES = 100L;
 	private static final long SECONDS_PER_FLOOR = 8L;
-	private static final long FEET_PER_FLOOR = 10L;
+	private static final long METRES_PER_FLOOR = 3L;
 	private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(3);
-	private static final int ESTIMATED_PLANE_SPEED = 926000;
+	private static final int ESTIMATED_PLANE_SPEED_METRES_PER_HR = 926000;
 	private final GeoApiContext geoApiContext;
 
 	@Autowired
@@ -44,6 +44,17 @@ public class DurationServiceImpl implements DurationService {
 		this.geoApiContext = geoApiContext;
 	}
 
+	/**
+	 * Concurrently computes the walking, driving and bus distance between two points, if the distance of the minimum of
+	 * these is less than 100 metres use the altitude instead to compute minimum time. Each result min distance between
+	 * two points is cached.
+	 * 
+	 * @param start
+	 *            the start position
+	 * @param end
+	 *            the end position
+	 * @return the estimated minimum travel duration in seconds
+	 */
 	@Cacheable(value = "travelDuration", key = "{#start.getId(), #end.getId()}")
 	public Long getTravelTimeBetween2Points(LatLngAlt start, LatLngAlt end) {
 		LatLng startPoint = new LatLng(start.getLat(), start.getLng());
@@ -89,6 +100,22 @@ public class DurationServiceImpl implements DurationService {
 		}
 	}
 
+	/**
+	 * Compute the estimate minimum travel duration between two points give the duration and distance for each travel
+	 * mode. If we have no data for the travel modes use the haversine formula, if we do have data verify the minimum
+	 * distance is greater than 100 metres and get the minimum duration of these modes. However, if the minimum distance
+	 * of the modes is less than 100 metres, use the altitude to calculate the minimum duration between the two points.
+	 * 
+	 * @param computedPairs
+	 *            computed duration and distance pairs for each travel mode between the two points
+	 * @param altitudeDiff
+	 *            the difference in altitude
+	 * @param start
+	 *            start point
+	 * @param end
+	 *            end point
+	 * @return the estimated minimum travel duration between the two points
+	 */
 	private Long minDuration(CompletableFuture<List<Optional<Pair<Duration, Distance>>>> computedPairs,
 			long altitudeDiff, LatLng start, LatLng end) {
 		try {
@@ -100,24 +127,43 @@ public class DurationServiceImpl implements DurationService {
 				long minDistance = Collections
 						.min(actualPairs.stream().map(pair -> pair.getSecond().inMeters).collect(Collectors.toList()));
 
-				if (minDistance < MIN_DISTANCE) {
+				if (minDistance < MIN_DISTANCE_METRES) {
 					return estimateFloors(altitudeDiff) * SECONDS_PER_FLOOR;
 				} else {
-					return Collections.min(actualPairs.stream()
-							.map(pair -> pair.getFirst().inSeconds).collect(Collectors.toList()));
+					return Collections.min(
+							actualPairs.stream().map(pair -> pair.getFirst().inSeconds).collect(Collectors.toList()));
 				}
 			} else {
-				return ((computeDistanceHaversine(start, end) * 1000) / ((ESTIMATED_PLANE_SPEED / 60) / 60));
+				long planeTravelTimeSeconds = (ESTIMATED_PLANE_SPEED_METRES_PER_HR / 60) / 60;
+				long haversineDistanceInMetres = (computeDistanceHaversine(start, end) * 1000);
+				return haversineDistanceInMetres / planeTravelTimeSeconds;
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			throw new RuntimeException("Failed to compute duration", e);
 		}
 	}
 
+	/**
+	 * A floor is approximately 3 metres, if the altitude is less than this return one floor else estimate number of
+	 * floors
+	 * 
+	 * @param altitude
+	 *            the altitude to estimate floors from
+	 * @return estimate of the number of floors
+	 */
 	private long estimateFloors(long altitude) {
-		return altitude < 10 ? 1 : altitude / FEET_PER_FLOOR;
+		return altitude < METRES_PER_FLOOR ? 1 : altitude / METRES_PER_FLOOR;
 	}
 
+	/**
+	 * Compute the haversine distance in KM
+	 * 
+	 * @param start
+	 *            start point
+	 * @param end
+	 *            end point
+	 * @return haversine distance in KM
+	 */
 	private long computeDistanceHaversine(LatLng start, LatLng end) {
 		double latRad = Math.toRadians((end.lat - start.lat));
 		double lngRad = Math.toRadians((end.lng - start.lng));
