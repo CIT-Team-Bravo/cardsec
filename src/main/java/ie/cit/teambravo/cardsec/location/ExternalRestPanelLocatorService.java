@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class PanelLocatorServiceImpl implements PanelLocatorService {
+public class ExternalRestPanelLocatorService implements PanelLocatorService {
 
 	@Value("${panel.locator.endpoint}")
 	private String panelLocationEndpoint;

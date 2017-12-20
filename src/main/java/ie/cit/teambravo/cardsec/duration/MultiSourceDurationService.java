@@ -29,8 +29,11 @@ import com.google.maps.model.TravelMode;
 
 import ie.cit.teambravo.cardsec.location.LatLngAlt;
 
+/**
+ * Implementation of the DurationServiceAPI using Google API and Haversine formula
+ */
 @Service
-public class DurationServiceImpl implements DurationService {
+public class MultiSourceDurationService implements DurationService {
 	private static final int EARTH_RADIUS = 6371;
 	private static final long MIN_DISTANCE_METRES = 100L;
 	private static final long SECONDS_PER_FLOOR = 8L;
@@ -40,7 +43,7 @@ public class DurationServiceImpl implements DurationService {
 	private final GeoApiContext geoApiContext;
 
 	@Autowired
-	public DurationServiceImpl(GeoApiContext geoApiContext) {
+	public MultiSourceDurationService(GeoApiContext geoApiContext) {
 		this.geoApiContext = geoApiContext;
 	}
 

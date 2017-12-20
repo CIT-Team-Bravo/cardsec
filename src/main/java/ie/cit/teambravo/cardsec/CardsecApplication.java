@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
+/**
+ * Spring Boot Application entry point
+ */
 @EnableCaching
 @SpringBootApplication(scanBasePackageClasses = {
 		CardsecApplication.class

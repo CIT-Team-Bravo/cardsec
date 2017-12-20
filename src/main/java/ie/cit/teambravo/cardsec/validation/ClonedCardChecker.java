@@ -13,16 +13,16 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 import ie.cit.teambravo.cardsec.location.PanelLocatorService;
 
 @Service
-public class ValidationServiceImpl implements ValidationService {
+public class ClonedCardChecker implements ValidationService {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(ValidationServiceImpl.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(ClonedCardChecker.class);
 	private EventService eventService;
 	private PanelLocatorService panelLocatorService;
 	private AlertService alertService;
 	private DurationService durationService;
 
 	@Autowired
-	public ValidationServiceImpl(EventService eventService, PanelLocatorService panelLocatorService,
+	public ClonedCardChecker(EventService eventService, PanelLocatorService panelLocatorService,
 			AlertService alertService, DurationService durationService) {
 		this.eventService = eventService;
 		this.panelLocatorService = panelLocatorService;
