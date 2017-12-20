@@ -36,7 +36,7 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 public class MultiSourceDurationService implements DurationService {
 	private static final int EARTH_RADIUS = 6371;
 	private static final long MIN_DISTANCE_METRES = 100L;
-	private static final long SECONDS_PER_FLOOR = 8L;
+	private static final long SECONDS_PER_FLOOR = 9L;
 	private static final long METRES_PER_FLOOR = 3L;
 	private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(3);
 	private static final int ESTIMATED_PLANE_SPEED_METRES_PER_HR = 926000;
@@ -48,9 +48,10 @@ public class MultiSourceDurationService implements DurationService {
 	}
 
 	/**
-	 * Concurrently computes the walking, driving and cycling distance between two points, if the distance of the minimum of
-	 * these is less than 100 metres use the altitude instead to compute minimum time. Each result min distance between
-	 * two points is cached.
+	 * Concurrently computes the walking, driving and cycling distance between two points, if the distance of the
+	 * minimum of these is less than 100 metres use the altitude and an estimate of floor time travel instead (which is
+	 * estimated to be ~9 seconds, taking into account the current fastest 100 metre sprint of 9.58 seconds) to compute
+	 * minimum time. Each result min distance between two points is cached.
 	 * 
 	 * @param start
 	 *            the start position

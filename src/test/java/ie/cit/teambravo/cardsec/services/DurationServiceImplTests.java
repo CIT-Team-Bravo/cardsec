@@ -43,7 +43,7 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 public class DurationServiceImplTests {
 
 	private static final long METRES_PER_FLOOR = 3L;
-	private static final long SECONDS_PER_FLOOR = 8L;
+	private static final long SECONDS_PER_FLOOR = 9L;
 	@Mock
 	private GeoApiContext geoApiContext;
 
