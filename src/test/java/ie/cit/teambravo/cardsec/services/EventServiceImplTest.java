@@ -2,7 +2,7 @@ package ie.cit.teambravo.cardsec.services;
 
 import ie.cit.teambravo.cardsec.events.Event;
 import ie.cit.teambravo.cardsec.events.EventRepository;
-import ie.cit.teambravo.cardsec.events.EventServiceImpl;
+import ie.cit.teambravo.cardsec.events.JpaStoreEventService;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class EventServiceImplTest {
     private EventRepository eventRepositoryMock;
 
     @InjectMocks
-    private EventServiceImpl eventService;
+    private JpaStoreEventService eventService;
 
     @Test
     public void saveEvent_when_eventIsSupplied_then_eventIsSaved() {

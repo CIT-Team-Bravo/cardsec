@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * EventService implementation backed by a JPA repository
+ */
 @Service
-public class EventServiceImpl implements EventService {
+public class JpaStoreEventService implements EventService {
 
 	@Autowired
 	private EventRepository eventRepository;

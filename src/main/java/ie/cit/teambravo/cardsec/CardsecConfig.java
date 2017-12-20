@@ -23,6 +23,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Spring application configuration
+ */
 @Configuration
 @EnableSwagger2
 public class CardsecConfig {
@@ -36,6 +39,7 @@ public class CardsecConfig {
 	@Value("${mqtt.topic}")
 	private String topic;
 
+	// MQTT Related
 	@Bean
 	public MqttPahoClientFactory mqttClientFactory() {
 		DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
@@ -57,6 +61,7 @@ public class CardsecConfig {
 		return new DirectChannel();
 	}
 
+	// Swagger related
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
@@ -64,16 +69,20 @@ public class CardsecConfig {
 				.build();
 	}
 
-	@Bean
-	public GeoApiContext geoApiContext(ApplicationContext ctx) {
-		return new GeoApiContext.Builder().apiKey(apiKey).build();
-	}
-
+	/**
+	 * Redirect / to the swagger ui
+	 */
 	@Controller
 	class SwaggerRedirect {
 		@RequestMapping("/")
 		public String redirectToUi() {
 			return "redirect:/swagger-ui.html";
 		}
+	}
+
+	// Geo API related
+	@Bean
+	public GeoApiContext geoApiContext(ApplicationContext ctx) {
+		return new GeoApiContext.Builder().apiKey(apiKey).build();
 	}
 }
