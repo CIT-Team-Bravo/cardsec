@@ -48,7 +48,7 @@ public class MultiSourceDurationService implements DurationService {
 	}
 
 	/**
-	 * Concurrently computes the walking, driving and bus distance between two points, if the distance of the minimum of
+	 * Concurrently computes the walking, driving and cycling distance between two points, if the distance of the minimum of
 	 * these is less than 100 metres use the altitude instead to compute minimum time. Each result min distance between
 	 * two points is cached.
 	 * 
