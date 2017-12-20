@@ -1,0 +1,21 @@
+{'altitude': 150.0, 'coordinates': {'latitude': 51.524774, 'longitude': -0.131913}, 'relativeLocation': 'UCL, Institute of Archaeology, South Entrance, London, UK'}
+{'altitude': 150.0, 'coordinates': {'latitude': 51.521726, 'longitude': -0.130196}, 'relativeLocation': 'Birkbeck UCL, Malet Street Entrance, London, UK'}
+{'altitude': 250.0, 'coordinates': {'latitude': 37.428637, 'longitude': -122.165954}, 'relativeLocation': 'Stanford Department of Economics, Serra Mall, West Entrance, CA, USA'}
+{'altitude': 90.0, 'coordinates': {'latitude': 51.886403, 'longitude': -8.53358}, 'relativeLocation': 'Old Tyco Building, Main Door, Cork, Ireland'}
+{'altitude': 280.0, 'coordinates': {'latitude': 37.428638, 'longitude': -122.165955}, 'relativeLocation': 'Stanford Department of Economics, 3rd Floor, West Wing, CA, USA'}
+{'altitude': 100.0, 'coordinates': {'latitude': 51.884969, 'longitude': -8.533235}, 'relativeLocation': 'CIT Library North Ground Exit, Cork, Ireland'}
+{'altitude': 160.0, 'coordinates': {'latitude': 51.521723, 'longitude': -0.130194}, 'relativeLocation': 'Birkbeck UCL, First Floor, London, UK'}
+{'altitude': 100.0, 'coordinates': {'latitude': 51.883165, 'longitude': -8.532648}, 'relativeLocation': 'Main Building, Ground Floor East Exit, Cork, Ireland'}
+{'altitude': 150.0, 'coordinates': {'latitude': 51.52528, 'longitude': -0.133313}, 'relativeLocation': 'UCL, Department of Physics & Astronomy Main Entrance, London, UK'}
+{'altitude': 260.0, 'coordinates': {'latitude': 37.428637, 'longitude': -122.165954}, 'relativeLocation': 'Stanford Department of Economics, 1st Floor, West Wing, CA, USA'}
+{'altitude': 95.0, 'coordinates': {'latitude': 51.8864, 'longitude': -8.533581}, 'relativeLocation': 'Old Tyco Building, First Floor, Cork, Ireland'}
+{'altitude': 50.0, 'coordinates': {'latitude': 42.373921, 'longitude': -71.116374}, 'relativeLocation': 'Widener Library, Harvard University, Main Entrance, MA, USA'}
+{'altitude': 100.0, 'coordinates': {'latitude': 51.884827, 'longitude': -8.533947}, 'relativeLocation': 'CIT Library West Wing Entry Doors, Cork, Ireland'}
+{'altitude': 110.0, 'coordinates': {'latitude': 51.883165, 'longitude': -8.532648}, 'relativeLocation': 'Main Building, First Floor East Exit, Cork, Ireland'}
+{'altitude': 250.0, 'coordinates': {'latitude': 37.428798, 'longitude': -122.163708}, 'relativeLocation': 'Stanford Ford Center, Arguello Way, Main entrance, CA, USA'}
+{'altitude': 250.0, 'coordinates': {'latitude': 37.428348, 'longitude': -122.160999}, 'relativeLocation': 'Stanford Graduate School of Business, Faculty Building East, Main entrance, CA, USA'}
+{'altitude': 90.0, 'coordinates': {'latitude': 51.886325, 'longitude': -8.53562}, 'relativeLocation': 'Rubicon Building, Main Door, Cork, Ireland'}
+{'altitude': 150.0, 'coordinates': {'latitude': 51.524885, 'longitude': -0.133873}, 'relativeLocation': 'UCL, North Cloisters Entrance, London, UK'}
+{'altitude': 51.0, 'coordinates': {'latitude': 42.374967, 'longitude': -71.116676}, 'relativeLocation': 'Thayer Hall, Harvard University, Main Entrance, MA, USA'}
+{'altitude': 270.0, 'coordinates': {'latitude': 37.428636, 'longitude': -122.165953}, 'relativeLocation': 'Stanford Department of Economics, 2nd Floor, West Wing, CA, USA'}
+{'altitude': 51.0, 'coordinates': {'latitude': 42.373916, 'longitude': -71.115494}, 'relativeLocation': 'Emerson Hall, Harvard University, Main Entrance, MA, USA'}
