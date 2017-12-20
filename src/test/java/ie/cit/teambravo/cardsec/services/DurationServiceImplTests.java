@@ -42,8 +42,8 @@ import ie.cit.teambravo.cardsec.location.LatLngAlt;
 })
 public class DurationServiceImplTests {
 
-	private static final int FEET_PER_FLOOR = 10;
-	private static final int SECONDS_PER_FLOOR = 8;
+	private static final long METRES_PER_FLOOR = 3L;
+	private static final long SECONDS_PER_FLOOR = 9L;
 	@Mock
 	private GeoApiContext geoApiContext;
 
@@ -176,7 +176,7 @@ public class DurationServiceImplTests {
 	}
 
 	@Test
-	public void should_calculate_duration_from_altitude_if_distance_is_lss_than_100()
+	public void should_calculate_duration_from_altitude_if_distance_is_less_than_100()
 			throws InterruptedException, ApiException, IOException {
 		// Arrange
 		LatLng start = new LatLng(14, 22);
@@ -207,12 +207,12 @@ public class DurationServiceImplTests {
 
 		// Assert
 		assertNotNull(duration);
-		long diff = (long) ((start3d.getAltitude() - end3d.getAltitude()) / FEET_PER_FLOOR * SECONDS_PER_FLOOR);
+		long diff = (long) ((start3d.getAltitude() - end3d.getAltitude()) / METRES_PER_FLOOR) * SECONDS_PER_FLOOR;
 		assertThat(duration, is(diff));
 	}
 
 	@Test
-	public void should_compute_haversine_if_no_reult_from_google()
+	public void should_compute_haversine_if_no_result_from_google()
 			throws InterruptedException, ApiException, IOException {
 		// Arrange
 		LatLng start = new LatLng(42.373916, -71.115494);
